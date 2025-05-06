@@ -1,0 +1,470 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЭкоСтандарт | Дезинсекция и борьба с вредителями</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2e86de;
+            --secondary-color: #54a0ff;
+            --accent-color: #ff6b6b;
+            --dark-color: #222f3e;
+            --light-color: #f5f6fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .main-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 30px auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 30px;
+            min-height: 400px;
+            gap: 30px;
+        }
+        
+        .left-block {
+            width: 60%;
+            padding-right: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            grid-auto-rows: 120px;
+            gap: 15px;
+            align-content: start;
+            overflow-y: auto;
+            max-height: 650px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) #f1f1f1;
+        }
+        
+        .left-block::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .left-block::-webkit-scrollbar-thumb {
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        .right-block {
+            width: 40%;
+            min-height: 300px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            align-self: start;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+        }
+        
+        .beetle-icon {
+            width: 84px;
+            height: 84px;
+            object-fit: contain;
+            cursor: pointer;
+            margin: 0 auto;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .beetle-icon:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 4px 12px rgba(46, 134, 222, 0.2);
+        }
+        
+        .beetle-icon.active {
+            border-color: var(--primary-color);
+            background-color: rgba(46, 134, 222, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .solution-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .solution-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        .solution-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            opacity: 1;
+            transition: opacity 0.2s ease-in-out;
+        }
+        
+        .solution-text a {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .solution-text a:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+        
+        .beetle-name {
+            text-align: center;
+            font-size: 0.85rem;
+            margin-top: 6px;
+            color: var(--dark-color);
+            user-select: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 500;
+        }
+        
+        .beetle-item {
+            width: 100%;
+            height: 120px;
+            text-align: center;
+            margin: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .news-container {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 20px;
+        }
+        
+        .news-container h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--dark-color);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .news-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        
+        .card-img-container {
+            height: 200px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f3f5;
+        }
+        
+        .card-img-top {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease;
+        }
+        
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .card-text {
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 8px 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 134, 222, 0.3);
+        }
+        
+        .card-footer {
+            background-color: transparent;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding: 12px 20px;
+            font-size: 0.85rem;
+        }
+        
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .left-block, .right-block {
+                width: 100%;
+            }
+            
+            .right-block {
+                position: static;
+            }
+            
+            .left-block {
+                max-height: 400px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-container {
+                padding: 15px;
+            }
+            
+            .left-block {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+            
+            .beetle-icon {
+                width: 70px;
+                height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+{% include 'includes/navbar.html' %}
+
+<div class="main-container">
+    <div class="left-block" id="beetle-list">
+        {% for beetle in beetles %}
+        <div class="beetle-item">
+            {% if beetle.beetle_image %}
+            <img src="{{ beetle.beetle_image.url }}" alt="{{ beetle.name }}" class="beetle-icon" data-id="{{ beetle.id }}" data-description="{{ beetle.description|escapejs }}" data-name="{{ beetle.name }}">
+            <p class="beetle-name">{{ beetle.name }}</p>
+            {% else %}
+            <div class="beetle-icon" data-id="{{ beetle.id }}" data-description="{{ beetle.description|escapejs }}" data-name="{{ beetle.name }}" style="font-size: 2.5rem; color: var(--primary-color); display: flex; align-items: center; justify-content: center;">
+                <i class="{{ beetle.icon_class }}"></i>
+            </div>
+            <p class="beetle-name">{{ beetle.name }}</p>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p class="text-center py-4">Пока нет данных о вредителях</p>
+        {% endfor %}
+    </div>
+    <div class="right-block" id="solution-block">
+        <p class="solution-title">Выберите вредителя</p>
+        <p class="solution-text">Выберите вредителя из списка слева, чтобы увидеть подробное описание и методы борьбы с ним.</p>
+    </div>
+</div>
+
+<!-- News Section -->
+<div class="news-container">
+    <h2 class="text-center">Наши последние новости</h2>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-img-container">
+                    <img src="https://ir.ozone.ru/s3/multimedia-q/c1000/6595253054.jpg" class="card-img-top" alt="Новая технология дезинсекции">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Новая технология дезинсекции без запаха</h5>
+                    <p class="card-text">Мы внедрили инновационный метод обработки помещений, который абсолютно безопасен для людей и животных. Теперь дезинсекция проводится без резкого химического запаха, а защитный эффект сохраняется на 50% дольше.</p>
+                    <a href="#" class="btn btn-outline-primary">Узнать подробнее</a>
+                </div>
+                <div class="card-footer text-muted">
+                    <small><i class="far fa-calendar-alt me-2"></i>Акция действует до 30 августа</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-img-container">
+                    <img src="https://sanpin-service.ru/wp-content/themes/sanpin/img/sanpin-servis-unichtozhenie-klopov-dezinsekciya.png" class="card-img-top" alt="Экстренная дезинсекция">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Экстренная дезинсекция за 2 часа</h5>
+                    <p class="card-text">Теперь доступна услуга срочной обработки от тараканов, клопов и других вредителей. Наши специалисты приедут в течение 2 часов после заявки и проведут комплексную обработку с гарантией результата.</p>
+                    <a href="#" class="btn btn-outline-primary">Заказать срочный выезд</a>
+                </div>
+                <div class="card-footer text-muted">
+                    <small><i class="fas fa-clock me-2"></i>Круглосуточный выезд</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Функция для склонения названий вредителей
+    function getCorrectCase(name) {
+        // Словарь исключений и специальных форм
+        const exceptions = {
+            'клоп': 'клопами',
+            'вошь': 'вшами',
+            'муравей': 'муравьями',
+            'таракан': 'тараканами',
+            'мышь': 'мышами',
+            'крыса': 'крысами',
+            'клещ': 'клещами',
+            'моль': 'молью',
+            'оса': 'осами',
+            'пчела': 'пчёлами',
+            'шершень': 'шершнями',
+            'блоха': 'блохами',
+            'клоп постельный': 'клопами',
+            'клоп бельевой': 'клопами',
+            'муха': 'мухами',
+            'комар': 'комарами',
+            'сверчок': 'сверчками',
+            'жук': 'жуками',
+            'мокрица': 'мокрицами',
+            'чешуйница': 'чешуйницами',
+            'паук': 'пауками',
+            'сороконожка': 'сороконожками',
+            'древоточец': 'древоточцами',
+            'короед': 'короедами'
+        };
+
+        // Приводим к нижнему регистру для сравнения
+        const lowerName = name.toLowerCase();
+        
+        // Проверяем точные совпадения
+        if (exceptions[lowerName]) {
+            return exceptions[lowerName];
+        }
+        
+        // Проверяем частичные совпадения (если название содержит ключ)
+        for (const [key, value] of Object.entries(exceptions)) {
+            if (lowerName.includes(key)) {
+                return value;
+            }
+        }
+
+        // Общие правила склонения
+        if (lowerName.endsWith('а') || lowerName.endsWith('я')) {
+            return name.slice(0, -1) + 'ами';
+        }
+        if (lowerName.endsWith('ь')) {
+            return name.slice(0, -1) + 'ями';
+        }
+        if (lowerName.endsWith('й') || lowerName.endsWith('е') || lowerName.endsWith('о') || lowerName.endsWith('ы')) {
+            return name + 'ми';
+        }
+
+        // По умолчанию добавляем "ами"
+        return name + 'ами';
+    }
+
+    const beetleIcons = document.querySelectorAll('.beetle-icon');
+    const solutionTitle = document.querySelector('.solution-title');
+    const solutionText = document.querySelector('.solution-text');
+
+    beetleIcons.forEach(icon => {
+        icon.addEventListener('click', () => {
+            // Remove active class from all
+            beetleIcons.forEach(i => {
+                i.classList.remove('active');
+                i.style.transform = 'scale(1)';
+            });
+            
+            // Add active class to clicked
+            icon.classList.add('active');
+            
+            // Update solution block
+            let description = icon.getAttribute('data-description');
+            const name = icon.getAttribute('data-name') || 'вредителем';
+
+            // Function to decode unicode escape sequences like \u002D
+            function decodeUnicodeEscape(str) {
+                return str.replace(/\\u[\dA-Fa-f]{4}/g, function(match) {
+                    return String.fromCharCode(parseInt(match.replace("\\u", ""), 16));
+                });
+            }
+
+            description = decodeUnicodeEscape(description);
+            const correctCase = getCorrectCase(name);
+            solutionTitle.textContent = `Методы борьбы с ${correctCase}`;
+
+            // Animate text change with fade out and fade in
+            solutionText.style.opacity = 0;
+            solutionText.addEventListener('transitionend', function handler() {
+                solutionText.removeEventListener('transitionend', handler);
+                solutionText.innerHTML = description + '<br><br>При необходимости не стесняйтесь обратиться к профессиональным дезинсекторам для эффективной обработки. <a href="/services/" class="service-link"><i class="fas fa-arrow-right me-2"></i>Подробнее об услугах</a>';
+                // Force reflow to ensure opacity transition triggers
+                void solutionText.offsetWidth;
+                setTimeout(() => {
+                    solutionText.style.opacity = 1;
+                }, 10);
+            });
+        });
+    });
+</script>
+{% include 'includes/footer.html' %}
+</body>
+</html>
