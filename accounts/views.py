@@ -27,8 +27,17 @@ def home(request):
 def profile(request):
     return render(request, 'accounts/profile.html')
 
+from .models import Service
+
 def services(request):
-    return render(request, 'accounts/services.html')
+    services = Service.objects.all()
+    return render(request, 'accounts/services.html', {'services': services})
+
+from django.shortcuts import get_object_or_404
+
+def service_detail(request, pk):
+    service = get_object_or_404(Service, pk=pk)
+    return render(request, 'accounts/service_detail.html', {'service': service})
 
 def about(request):
     return render(request, 'accounts/about.html')

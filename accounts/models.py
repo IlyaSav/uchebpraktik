@@ -8,3 +8,14 @@ class Beetle(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Service(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    price_min = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Минимальная цена", default=0.00)
+    price_max = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Максимальная цена", default=0.00)
+    equipment_image = models.ImageField(upload_to='equipment/', blank=True, null=True)
+
+    def __str__(self):
+        return self.name

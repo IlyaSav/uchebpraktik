@@ -3,13 +3,255 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>О компании</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>О компании | Профессиональная дезинсекция</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Иконка Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        .hero-section {
+        background: linear-gradient(135deg, rgba(25,135,84,0.9) 0%, rgba(13,110,253,0.8) 100%), 
+                    url('https://img2.fedpress.ru/thumbs/800/2022/09/2348/e58abf439477a0a6267dacf7c5d9d5e2.jpg') no-repeat center center;
+        background-size: cover;
+        background-attachment: fixed;
+        position: relative;
+        padding: 80px 0;
+        color: black;
+    }
+    
+    @media (max-width: 768px) {
+        .hero-section {
+            background-attachment: scroll;
+            padding: 60px 0;
+        }
+        .hero-section h1 {
+            font-size: 2.5rem;
+        }
+        .hero-section .lead {
+            font-size: 1.25rem;
+        }
+    }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #198754;
+            margin-bottom: 1rem;
+        }
+        .license-card {
+            border-left: 4px solid #198754;
+            transition: transform 0.3s;
+        }
+        .license-card:hover {
+            transform: translateY(-5px);
+        }
+        .timeline {
+            position: relative;
+            padding-left: 50px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #198754;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -38px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #198754;
+            border: 3px solid white;
+        }
+    </style>
 </head>
 <body>
 {% include 'includes/navbar.html' %}
-<h1>О компании</h1>
-<p>Информация о компании, лицензиях и опыте работы.</p>
+
+<!-- Герой секция -->
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">О нашей компании</h1>
+        <p class="lead">Профессиональная дезинсекция с 2010 года</p>
+    </div>
+</section>
+
+<!-- О компании -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row min-vh-80 align-items-center py-5">
+            <div class="col-lg-8 mx-auto text-center text-white bg-dark bg-opacity-75 p-4 p-md-5 rounded-3">
+                <h1 class="display-3 fw-bold mb-4">ЭкоСтандарт Дезинсекция</h1>
+                <p class="lead fs-3 mb-4">Профессиональное уничтожение вредителей с 2010 года</p>
+                <div class="d-flex flex-wrap justify-content-center gap-3">
+                    <a href="#contact" class="btn btn-success btn-lg px-4 py-2">
+                        <i class="fas fa-phone me-2"></i>Вызвать специалиста
+                    </a>
+                    <a href="#services" class="btn btn-outline-light btn-lg px-4 py-2">
+                        <i class="fas fa-bug me-2"></i>Наши услуги
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Наши преимущества -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Почему выбирают нас</h2>
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Безопасность</h3>
+                <p>Используем только сертифицированные препараты 4 класса безопасности (малоопасные)</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="feature-icon">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <h3>Гарантия</h3>
+                <p>Даем гарантию до 2 лет на все виды обработок (зависит от вида вредителей)</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="feature-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>Оперативность</h3>
+                <p>Выезд специалиста в день обращения, обработка помещений любой сложности</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Лицензии и сертификаты -->
+<section class="container my-5">
+    <h2 class="text-center mb-5">Наши лицензии и сертификаты</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 license-card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-file-certificate text-success me-2"></i> Лицензия Минздрава</h5>
+                    <p class="card-text">Лицензия № ЛО-77-01-012345 от 12.03.2018 на осуществление дезинфекционной деятельности</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 license-card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-award text-success me-2"></i> Сертификат СРО</h5>
+                    <p class="card-text">Сертификат соответствия требованиям саморегулируемой организации в сфере дезинфектологии</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 license-card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-check-circle text-success me-2"></i> ISO 9001</h5>
+                    <p class="card-text">Сертифицированная система менеджмента качества согласно международному стандарту</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Наш опыт -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Наш опыт и достижения</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h4>2010</h4>
+                <p>Основание компании. Первые клиенты в Москве и Московской области.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>2013</h4>
+                <p>Получение лицензии Минздрава. Расширение штата до 15 специалистов.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>2015</h4>
+                <p>Запуск собственной лаборатории по разработке и тестированию препаратов.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>2018</h4>
+                <p>Сертификация по ISO 9001. Обслуживание первых корпоративных клиентов.</p>
+            </div>
+            <div class="timeline-item">
+                <h4>2022</h4>
+                <p>Более 50 специалистов в штате. География работы - вся Центральная Россия.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Технологии -->
+<section class="container my-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6 order-lg-2">
+            <h2 class="mb-4">Современные технологии дезинсекции</h2>
+            <div class="accordion" id="techAccordion">
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                            Холодный туман
+                        </button>
+                    </h3>
+                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#techAccordion">
+                        <div class="accordion-body">
+                            Микрокапельное распыление инсектицидов с размером частиц 50-100 микрон. Позволяет препарату долго оставаться в воздухе и проникать в самые труднодоступные места.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                            Горячий туман
+                        </button>
+                    </h3>
+                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#techAccordion">
+                        <div class="accordion-body">
+                            Нагрев препарата до 60°C создает "туман" с частицами 5-30 микрон. Обеспечивает максимальное проникновение и эффективность против всех стадий развития насекомых.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                            Барьерная защита
+                        </button>
+                    </h3>
+                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#techAccordion">
+                        <div class="accordion-body">
+                            Нанесение долгоиграющих препаратов по периметру помещения, создающее защитный барьер от проникновения насекомых на срок до 6 месяцев.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 order-lg-1">
+            <img src="{{ MEDIA_URL }}оборудование/equipment.png" alt="Наше оборудование" class="img-fluid rounded shadow">
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+
+
 {% include 'includes/footer.html' %}
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

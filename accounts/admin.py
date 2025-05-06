@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
-from .models import Beetle
+from .models import Beetle, Service
 
 # Unregister the original User admin
 admin.site.unregister(User)
@@ -17,6 +17,13 @@ class BeetleAdmin(admin.ModelAdmin):
             return format_html('<img src="{}" style="width: 50px; height: auto;" />', obj.beetle_image.url)
         return "-"
     image_tag.short_description = 'Изображение'
+
+# Register Service model
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price_min', 'price_max')
+    list_filter = ('price_min', 'price_max')
+    search_fields = ('name', 'description')
 
 # Extend UserAdmin to show groups in list display and filter
 @admin.register(User)
