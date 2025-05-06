@@ -2,14 +2,127 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Контакты</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Контакты | Услуги дезинсекции</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            font-size: 1.25rem;
+            margin-right: 15px;
+        }
+        .map-container {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: 400px;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-light">
 {% include 'includes/navbar.html' %}
-<h1>Контакты</h1>
-<p>Контактная информация, режим работы, карта расположения.</p>
+
+<div class="container py-5">
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-10 text-center">
+            <h1 class="display-4 fw-bold mb-3 text-gradient">Наши контакты</h1>
+            <p class="lead text-muted">Свяжитесь с нами любым удобным способом</p>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <h3 class="h5 mb-0">Телефон</h3>
+                    </div>
+                    <a href="tel:+79999999999" class="btn btn-link text-decoration-none p-0 fs-5">+7 (999) 999-99-99</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3 class="h5 mb-0">Email</h3>
+                    </div>
+                    <a href="mailto:info@ecostandart.ru" class="btn btn-link text-decoration-none p-0 fs-5">info@ecostandart.ru</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="h5 mb-0">Режим работы</h3>
+                    </div>
+                    <p class="fs-5 mb-0">Ежедневно 8:00 - 22:00</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h2 class="h4 mb-4">Наш офис</h2>
+                    <div class="d-flex mb-3">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h3 class="h5 mb-1">Адрес</h3>
+                            <p class="mb-0 fs-5">г. Москва, ул. Примерная, 123, офис 456, 4 этаж</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h3 class="h5 mb-3">Как добраться</h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-subway me-2 text-primary"></i> Метро "Примерная" (5 минут пешком)</li>
+                            <li class="mb-2"><i class="fas fa-bus me-2 text-primary"></i> Автобусы: 123, 456 (остановка "Улица Примерная")</li>
+                            <li><i class="fas fa-parking me-2 text-primary"></i> Парковка для клиентов (бесплатно)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6">
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.1234567890123!2d37.6173!3d55.7558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x414ab1234567890%3A0x123456789abcdef!2z0JrQsNC70LjRhtGPINCh0L7QsdC70LDRhtC40LrQsA!5e0!3m2!1sru!2sru!4v1234567890123!5m2!1sru!2sru" 
+                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% include 'includes/footer.html' %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
