@@ -296,6 +296,32 @@
 </head>
 <body>
 {% include 'includes/navbar.html' %}
+<div class="news-container">
+    <h2 class="text-center">Актуальные предложения</h2>
+    <div class="row">
+        {% for offer in offers %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-img-container">
+                    {% if offer.equipment_image %}
+                    <img src="{{ offer.equipment_image.url }}" class="card-img-top" alt="{{ offer.name }}">
+                    {% else %}
+                    <img src="{% static 'images/default-service.jpg' %}" class="card-img-top" alt="Товар">
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ offer.name }}</h5>
+                    <p class="card-text">{{ offer.description|truncatewords:20 }}</p>
+                    <p class="card-text"><strong>Цена от: </strong>{{ offer.price_min }}₽</p>
+                    <a href="{% url 'service_detail' offer.pk %}" class="btn btn-outline-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">Пока нет актуальных товаров</p>
+        {% endfor %}
+    </div>
+</div>
 
 <div class="main-container">
     <div class="left-block" id="beetle-list">
@@ -320,6 +346,9 @@
         <p class="solution-text">Выберите вредителя из списка слева, чтобы увидеть подробное описание и методы борьбы с ним.</p>
     </div>
 </div>
+
+
+
 
 <!-- News Section -->
 <div class="news-container">

@@ -19,3 +19,14 @@ class Service(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Article(models.Model):
+    title = models.CharField(max_length=255, verbose_name="Заголовок")
+    content = models.TextField(verbose_name="Содержание")
+    recommendations = models.TextField(verbose_name="Рекомендации по профилактике и санитарии")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+
+    def __str__(self):
+        return self.title

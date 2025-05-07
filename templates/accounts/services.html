@@ -4,27 +4,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Услуги | Профессиональная дезинсекция и дератизация</title>
+    <title>Услуги | Профессиональная дезинсекция</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2E7D32; /* Глубокий "санитарный" зеленый */
+            --primary-light: #4CAF50; /* Светло-зеленый для акцентов */
+            
+            --accent: #FFC107; /* Желтый для предупреждений */
+            --dark: #263238; /* Темно-серый для текста */
+            --light: #F5F5F5; /* Светлый фон */
+            --clean-white: #FFFFFF; /* Чистый белый */
+        }
+        
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        .card-service {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--clean-white);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-bottom: 4px solid transparent;
+        }
+        
+        .card-service:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(46, 125, 50, 0.15);
+            border-bottom-color: var(--primary);
+        }
+        
+        .card-img-service {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        
+        .card-service:hover .card-img-service {
+            transform: scale(1.05);
+        }
+        
+        .price-badge {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            padding: 8px 18px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .hero-title {
+            color: var(--primary-dark);
+            font-weight: 800;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero-title:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+        
+        .service-icon {
+            background-color: rgba(46, 125, 50, 0.1);
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .no-services {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid var(--accent);
+        }
+    </style>
 </head>
-<body style="font-family: 'Roboto', sans-serif; background-color: #f8f9fa;">
+<body>
 {% include 'includes/navbar.html' %}
 
 <main class="py-5">
-    <div class="container">
+    <div class="container py-4">
         <!-- Hero Section -->
         <div class="row mb-5">
             <div class="col-12 text-center">
-                <h1 class="display-4 fw-bold text-primary mb-3">Наши услуги</h1>
-                <p class="lead text-muted">Профессиональные решения для защиты вашего пространства от вредителей</p>
-                <div class="d-flex justify-content-center">
-                    <div class="border-bottom border-primary border-3" style="width: 100px;"></div>
-                </div>
+                <h1 class="display-4 fw-bold hero-title mb-3">Профессиональная дезинсекция</h1>
+                <p class="fs-5 text-muted mb-2">Эффективные решения для чистого и безопасного пространства</p>
             </div>
         </div>
 
@@ -32,42 +131,65 @@
         <div class="row g-4">
             {% for service in services %}
             <div class="col-lg-4 col-md-6">
-                <div class="card h-100 border-0 shadow-sm hover-shadow transition-all">
-                    <div class="card-img-top overflow-hidden" style="height: 200px;">
+                <div class="card card-service h-100">
+                    <div class="overflow-hidden">
                         {% if service.equipment_image %}
-                        <img src="{{ service.equipment_image.url }}" class="img-fluid w-100 h-100 object-fit-cover" alt="{{ service.name }}">
+                        <img src="{{ service.equipment_image.url }}" class="card-img-service w-100" alt="{{ service.name }}">
                         {% else %}
-                        <img src="{% static 'images/default-equipment.png' %}" class="img-fluid w-100 h-100 object-fit-cover" alt="Default equipment image">
+                        <img src="{% static 'images/default-service.jpg' %}" class="card-img-service w-100" alt="Дезинсекция">
                         {% endif %}
                     </div>
-                    <div class="card-body">
-                        <h3 class="h5 card-title fw-bold text-dark">{{ service.name }}</h3>
-                        <p class="card-text text-secondary mb-3">{{ service.description }}</p>
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="service-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3 class="h5 card-title fw-bold mb-0">{{ service.name }}</h3>
+                        </div>
+                        <p class="card-text text-secondary mb-4">{{ service.description }}</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-primary bg-opacity-10 text-primary py-2 px-3">
-                                от {{ service.price_min }}₽ - {{ service.price_max }}₽
+                            <span class="price-badge">
+                                от {{ service.price_min }}₽
                             </span>
-                            <a href="{% url 'service_detail' service.pk %}" class="btn btn-outline-primary btn-sm">Подробнее</a>
+                            <a href="{% url 'service_detail' service.pk %}" class="btn btn-primary btn-sm">
+                                Подробнее <i class="fas fa-chevron-right ms-2"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
             {% empty %}
             <div class="col-12">
-                <div class="alert alert-info text-center py-4">
-                    <i class="fas fa-info-circle me-2"></i> В данный момент услуги не доступны. Пожалуйста, проверьте позже.
+                <div class="text-center p-5 rounded-3 no-services">
+                    <i class="fas fa-exclamation-triangle text-warning fs-1 mb-3"></i>
+                    <h4 class="fw-bold mb-3">Обновление услуг</h4>
+                    <p class="text-muted mb-0">В данный момент мы обновляем перечень услуг. Приносим извинения за временные неудобства.</p>
                 </div>
             </div>
             {% endfor %}
         </div>
-
-        <!-- Call to Action -->
-        
+    </div>
 </main>
 
 {% include 'includes/footer.html' %}
 
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Simple animations -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.card-service');
+        cards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(15px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100 * index);
+        });
+    });
+</script>
 </body>
 </html>

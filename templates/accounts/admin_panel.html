@@ -1,0 +1,701 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Админ-панель | Дезинсекция</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3a5a40;
+            --primary-light: #588157;
+            --secondary: #a3b18a;
+            --accent: #dad7cd;
+            --text: #344e41;
+            --text-light: #64748b;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --success: #588157;
+            --error: #e63946;
+            --shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
+            color: var(--text);
+            line-height: 1.4;
+            font-size: 14px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin: 0 0 20px 0;
+            font-weight: 700;
+            font-size: 1.5rem;
+            grid-column: 1 / -1;
+        }
+        
+        /* Стили для компактных форм */
+        .form-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .form-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        
+        .form-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .form-header .material-icons {
+            font-size: 1.1rem;
+            color: var(--secondary);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .form-field {
+            flex: 1;
+            position: relative;
+            margin-bottom: 12px;
+        }
+        
+        .form-field label {
+            position: absolute;
+            top: -8px;
+            left: 10px;
+            font-size: 0.7rem;
+            color: var(--text-light);
+            background: var(--card-bg);
+            padding: 0 5px;
+            z-index: 2;
+        }
+        
+        .form-field input,
+        .form-field select,
+        .form-field textarea {
+            width: 100%;
+            padding: 10px 8px 8px 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            background: var(--card-bg);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .form-field textarea {
+            min-height: 60px;
+            resize: vertical;
+            padding-top: 12px;
+        }
+        
+        .file-upload {
+            position: relative;
+            border: 1px dashed var(--border);
+            border-radius: 4px;
+            padding: 10px 8px;
+            background: var(--card-bg);
+        }
+        
+        .file-upload label {
+            position: absolute;
+            top: -8px;
+            left: 10px;
+            font-size: 0.7rem;
+            color: var(--text-light);
+            background: var(--card-bg);
+            padding: 0 5px;
+            z-index: 2;
+        }
+        
+        .file-upload-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--text);
+            padding: 2px 0;
+        }
+        
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            margin-top: 5px;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        
+        .submit-btn:hover {
+            background: var(--primary-light);
+        }
+        
+        /* Стили для карточек данных */
+        .data-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .data-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        
+        .data-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 120px));
+            gap: 8px;
+            justify-content: start;
+        }
+        
+        .card-item {
+            width: 120px;
+            height: 100px;
+            padding: 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--card-bg);
+        }
+        
+        .card-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-color: var(--primary-light);
+        }
+        
+        .card-item img {
+            max-width: 40px;
+            max-height: 40px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            object-fit: contain;
+        }
+        
+        .card-item .material-icons {
+            font-size: 1.5rem;
+            color: var(--primary-light);
+            margin-bottom: 5px;
+        }
+        
+        .card-item span {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            font-weight: 500;
+        }
+        
+        .empty-message {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        /* Модальное окно */
+        .details-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1050;
+        }
+        
+        .details-content {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .details-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-light);
+            padding: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .card-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 100px));
+            }
+            
+            .card-item {
+                width: 100px;
+                height: 90px;
+            }
+            
+            .form-field,
+            .file-upload {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+{% include 'includes/navbar.html' %}
+<div class="container">
+    <h1>Панель управления дезинсекцией</h1>
+    
+    {% if message %}
+    <div class="message">
+        <span class="material-icons">check_circle</span>
+        {{ message }}
+    </div>
+    {% endif %}
+
+    <!-- Левая колонка - формы -->
+    <div class="form-column">
+        <!-- Форма добавления вредителя -->
+        <div class="form-card">
+            <div class="form-header">
+                <span class="material-icons">bug_report</span>
+                <span>Добавить вредителя</span>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-field">
+                    <label>Название</label>
+                    {{ beetle_form.name }}
+                </div>
+                <div class="form-row">
+                    <div class="form-field" style="flex: 1;">
+                        <label>Класс иконки</label>
+                        {{ beetle_form.icon_class }}
+                    </div>
+                    <div class="form-field" style="width: 120px;">
+                        <label>Изображение</label>
+                        <div class="file-upload">
+                            <label>Файл</label>
+                            <div class="file-upload-btn">
+                                <span class="material-icons" style="font-size: 16px;">attach_file</span>
+                                {{ beetle_form.beetle_image }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label>Описание</label>
+                    {{ beetle_form.description }}
+                </div>
+                <button type="submit" name="beetle_submit" class="submit-btn">
+                    <span class="material-icons" style="font-size: 16px;">add</span>
+                    Добавить
+                </button>
+            </form>
+        </div>
+
+        <!-- Форма добавления услуги -->
+        <div class="form-card">
+            <div class="form-header">
+                <span class="material-icons">construction</span>
+                <span>Добавить услугу</span>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-field">
+                    <label>Название</label>
+                    {{ service_form.name }}
+                </div>
+                <div class="form-row">
+                    <div class="form-field">
+                        <label>Цена от</label>
+                        {{ service_form.price_min }}
+                    </div>
+                    <div class="form-field">
+                        <label>Цена до</label>
+                        {{ service_form.price_max }}
+                    </div>
+                    <div class="form-field" style="width: 120px;">
+                        <label>Изображение</label>
+                        <div class="file-upload">
+                            <label>Файл</label>
+                            <div class="file-upload-btn">
+                                <span class="material-icons" style="font-size: 16px;">attach_file</span>
+                                {{ service_form.equipment_image }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label>Описание</label>
+                    {{ service_form.description }}
+                </div>
+                <button type="submit" name="service_submit" class="submit-btn">
+                    <span class="material-icons" style="font-size: 16px;">add</span>
+                    Добавить
+                </button>
+            </form>
+        </div>
+
+        <!-- Форма добавления статьи -->
+        <div class="form-card">
+            <div class="form-header">
+                <span class="material-icons">article</span>
+                <span>Добавить статью</span>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-field">
+                    <label>Заголовок</label>
+                    {{ article_form.title }}
+                </div>
+                <div class="form-field">
+                    <label>Содержание</label>
+                    {{ article_form.content }}
+                </div>
+                <div class="form-field">
+                    <label>Рекомендации</label>
+                    {{ article_form.recommendations }}
+                </div>
+                <button type="submit" name="article_submit" class="submit-btn">
+                    <span class="material-icons" style="font-size: 16px;">add</span>
+                    Добавить
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Правая колонка - данные -->
+    <div class="data-column">
+        <!-- Список вредителей -->
+        <div class="data-card">
+            <div class="data-header">
+                <span class="material-icons">bug_report</span>
+                <span>Вредители</span>
+            </div>
+            {% if beetles %}
+            <div class="card-grid">
+                {% for beetle in beetles %}
+                <div class="card-item" onclick="showDetails('beetle', {{ beetle.id }})">
+                    {% if beetle.beetle_image %}
+                    <img src="{{ beetle.beetle_image.url }}" alt="{{ beetle.name }}">
+                    {% else %}
+                    <span class="material-icons">bug_report</span>
+                    {% endif %}
+                    <span>{{ beetle.name }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-message">Нет данных</p>
+            {% endif %}
+        </div>
+
+        <!-- Список услуг -->
+        <div class="data-card">
+            <div class="data-header">
+                <span class="material-icons">construction</span>
+                <span>Услуги</span>
+            </div>
+            {% if services %}
+            <div class="card-grid">
+                {% for service in services %}
+                <div class="card-item" onclick="showDetails('service', {{ service.id }})">
+                    {% if service.equipment_image %}
+                    <img src="{{ service.equipment_image.url }}" alt="{{ service.name }}">
+                    {% else %}
+                    <span class="material-icons">construction</span>
+                    {% endif %}
+                    <span>{{ service.name }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-message">Нет данных</p>
+            {% endif %}
+        </div>
+
+        <!-- Список статей -->
+        <div class="data-card">
+            <div class="data-header">
+                <span class="material-icons">article</span>
+                <span>Статьи</span>
+            </div>
+            {% if articles %}
+            <div class="card-grid">
+                {% for article in articles %}
+                <div class="card-item" onclick="showDetails('article', {{ article.id }})">
+                    <span class="material-icons">article</span>
+                    <span>{{ article.title }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-message">Нет данных</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно деталей -->
+<div id="detailsOverlay" class="details-overlay" onclick="hideDetails()">
+    <div class="details-content" onclick="event.stopPropagation()">
+        <button class="details-close" onclick="hideDetails()">&times;</button>
+        <div id="detailsContent"></div>
+    </div>
+</div>
+
+<script>
+    // Обновление названия файла при выборе
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+        input.addEventListener('change', function() {
+            const fileName = this.files[0]?.name || 'Не выбран';
+            const label = this.closest('.file-upload').querySelector('label');
+            if (label) {
+                label.textContent = fileName.length > 15 ? fileName.substring(0, 12) + '...' : fileName;
+            }
+        });
+    });
+
+    // Данные для деталей
+    const beetleDetails = {
+        {% for beetle in beetles %}
+        {{ beetle.id }}: {
+            name: "{{ beetle.name|escapejs }}",
+            icon_class: "{{ beetle.icon_class|escapejs }}",
+            description: "{{ beetle.description|escapejs }}",
+            image_url: "{% if beetle.beetle_image %}{{ beetle.beetle_image.url }}{% endif %}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    };
+
+    const serviceDetails = {
+        {% for service in services %}
+        {{ service.id }}: {
+            name: "{{ service.name|escapejs }}",
+            description: "{{ service.description|escapejs }}",
+            price_min: "{{ service.price_min|default:'' }}",
+            price_max: "{{ service.price_max|default:'' }}",
+            image_url: "{% if service.equipment_image %}{{ service.equipment_image.url }}{% endif %}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    };
+
+    const articleDetails = {
+        {% for article in articles %}
+        {{ article.id }}: {
+            title: "{{ article.title|escapejs }}",
+            content: `{{ article.content|linebreaksbr|escapejs }}`,
+            recommendations: `{{ article.recommendations|linebreaksbr|escapejs }}`
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    };
+
+    function showDetails(type, id) {
+        let contentHtml = '';
+        if (type === 'beetle' && beetleDetails[id]) {
+            const d = beetleDetails[id];
+            contentHtml = `
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="beetle_id" value="${id}">
+                    <input type="hidden" name="beetle_edit" value="1">
+                    <h3 style="margin-top: 0; color: var(--primary);">Редактировать жука</h3>
+                    <div class="form-field">
+                        <label>Название</label>
+                        <input type="text" name="name" value="${d.name}" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Класс иконки</label>
+                        <input type="text" name="icon_class" value="${d.icon_class}">
+                    </div>
+                    <div class="form-field">
+                        <label>Описание</label>
+                        <textarea name="description" rows="4">${d.description}</textarea>
+                    </div>
+                    <div class="form-field">
+                        <label>Изображение</label>
+                        <input type="file" name="beetle_image" accept="image/*">
+                    </div>
+                    <button type="submit" class="submit-btn" style="margin-right: 10px;">
+                        <span class="material-icons" style="font-size: 16px;">save</span>
+                        Сохранить
+                    </button>
+                </form>
+                <form method="post" style="margin-top: 10px;">
+                    {% csrf_token %}
+                    <input type="hidden" name="beetle_id" value="${id}">
+                    <input type="hidden" name="beetle_delete" value="1">
+                    <button type="submit" class="submit-btn" style="background: var(--error);">
+                        <span class="material-icons" style="font-size: 16px;">delete</span>
+                        Удалить
+                    </button>
+                </form>
+            `;
+        } else if (type === 'service' && serviceDetails[id]) {
+            const d = serviceDetails[id];
+            contentHtml = `
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="service_id" value="${id}">
+                    <input type="hidden" name="service_edit" value="1">
+                    <h3 style="margin-top: 0; color: var(--primary);">Редактировать услугу</h3>
+                    <div class="form-field">
+                        <label>Название</label>
+                        <input type="text" name="name" value="${d.name}" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Описание</label>
+                        <textarea name="description" rows="4">${d.description}</textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field" style="flex: 1;">
+                            <label>Цена от</label>
+                            <input type="number" name="price_min" value="${d.price_min}" min="0" step="0.01">
+                        </div>
+                        <div class="form-field" style="flex: 1;">
+                            <label>Цена до</label>
+                            <input type="number" name="price_max" value="${d.price_max}" min="0" step="0.01">
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label>Изображение</label>
+                        <input type="file" name="equipment_image" accept="image/*">
+                    </div>
+                    <button type="submit" class="submit-btn" style="margin-right: 10px;">
+                        <span class="material-icons" style="font-size: 16px;">save</span>
+                        Сохранить
+                    </button>
+                </form>
+                <form method="post" style="margin-top: 10px;">
+                    {% csrf_token %}
+                    <input type="hidden" name="service_id" value="${id}">
+                    <input type="hidden" name="service_delete" value="1">
+                    <button type="submit" class="submit-btn" style="background: var(--error);">
+                        <span class="material-icons" style="font-size: 16px;">delete</span>
+                        Удалить
+                    </button>
+                </form>
+            `;
+        } else if (type === 'article' && articleDetails[id]) {
+            const d = articleDetails[id];
+            contentHtml = `
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="article_id" value="${id}">
+                    <input type="hidden" name="article_edit" value="1">
+                    <h3 style="margin-top: 0; color: var(--primary);">Редактировать статью</h3>
+                    <div class="form-field">
+                        <label>Заголовок</label>
+                        <input type="text" name="title" value="${d.title}" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Содержание</label>
+                        <textarea name="content" rows="4">${d.content.replace(/<br\s*\/?>/gi, '\\n')}</textarea>
+                    </div>
+                    <div class="form-field">
+                        <label>Рекомендации</label>
+                        <textarea name="recommendations" rows="4">${d.recommendations.replace(/<br\s*\/?>/gi, '\\n')}</textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" style="margin-right: 10px;">
+                        <span class="material-icons" style="font-size: 16px;">save</span>
+                        Сохранить
+                    </button>
+                </form>
+                <form method="post" style="margin-top: 10px;">
+                    {% csrf_token %}
+                    <input type="hidden" name="article_id" value="${id}">
+                    <input type="hidden" name="article_delete" value="1">
+                    <button type="submit" class="submit-btn" style="background: var(--error);">
+                        <span class="material-icons" style="font-size: 16px;">delete</span>
+                        Удалить
+                    </button>
+                </form>
+            `;
+        }
+        document.getElementById('detailsContent').innerHTML = contentHtml;
+        document.getElementById('detailsOverlay').style.display = 'flex';
+    }
+
+    function hideDetails() {
+        document.getElementById('detailsOverlay').style.display = 'none';
+    }
+</script>
+</body>
+</html>

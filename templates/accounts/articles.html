@@ -3,13 +3,203 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Полезные статьи</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Экспертные статьи по дезинсекции | Профессиональные решения</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #EEF2FF;
+            --dark: #111827;
+            --gray: #6B7280;
+            --light-gray: #F9FAFB;
+            --border-radius: 16px;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            line-height: 1.8;
+            background-color: var(--light-gray);
+        }
+        
+        .container-xxl {
+            max-width: 1440px;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, #3730A3 100%);
+            color: white;
+            padding: 6rem 0 5rem;
+            margin-bottom: 4rem;
+            clip-path: ellipse(100% 100% at 50% 0%);
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .article-card {
+            border: none;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            margin-bottom: 3rem;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(79, 70, 229, 0.12);
+        }
+        
+        .article-card .card-body {
+            padding: 3rem;
+        }
+        
+        .article-title {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+        }
+        
+        .article-content {
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin-bottom: 2rem;
+        }
+        
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .recommendations-box {
+            background-color: var(--primary-light);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin: 3rem 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .recommendations-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .recommendations-title i {
+            margin-right: 12px;
+            font-size: 1.5rem;
+        }
+        
+        .no-articles {
+            background-color: white;
+            padding: 4rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            margin: 4rem 0;
+        }
+        
+        .no-articles i {
+            font-size: 3.5rem;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            opacity: 0.7;
+        }
+        
+        .no-articles h3 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 4rem 0 3rem;
+                clip-path: ellipse(150% 100% at 50% 0%);
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .article-card .card-body {
+                padding: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-{% include 'includes/navbar.html' %}
-<h1>Полезные статьи</h1>
-<p>Рекомендации по профилактике и санитарии.</p>
-{% include 'includes/footer.html' %}
+    {% include 'includes/navbar.html' %}
+    
+    <section class="hero-section text-center">
+        <div class="container-xxl">
+            <h1 class="hero-title">Экспертные статьи</h1>
+            <p class="hero-subtitle">Профессиональные рекомендации по дезинсекции, дератизации и профилактике вредителей</p>
+        </div>
+    </section>
+
+    <main class="container-xxl px-4">
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                {% if articles %}
+                    <div class="articles-list">
+                        {% for article in articles %}
+                            <article class="article-card card">
+                                <div class="card-body">
+                                    <h2 class="article-title">{{ article.title }}</h2>
+                                    <div class="article-content">
+                                        {{ article.content|linebreaks }}
+                                    </div>
+                                    <div class="recommendations-box">
+                                        <h3 class="recommendations-title">
+                                            <i class="fas fa-lightbulb"></i>
+                                            Профилактические меры и рекомендации
+                                        </h3>
+                                        <div class="article-recommendations">
+                                            {{ article.recommendations|linebreaks }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="no-articles">
+                        <i class="far fa-newspaper"></i>
+                        <h3>Статьи в процессе подготовки</h3>
+                        <p class="text-muted">Наши эксперты готовят для вас полезные материалы</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    {% include 'includes/footer.html' %}
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

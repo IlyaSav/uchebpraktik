@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.translation import gettext_lazy as _
+from .models import Beetle, Service, Article
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -12,3 +13,18 @@ class UserRegisterForm(UserCreationForm):
 
 class EmailAuthenticationForm(AuthenticationForm):
     username = forms.EmailField(label=_("Email"), max_length=254, widget=forms.EmailInput(attrs={'autofocus': True}))
+
+class BeetleForm(forms.ModelForm):
+    class Meta:
+        model = Beetle
+        fields = '__all__'
+
+class ServiceForm(forms.ModelForm):
+    class Meta:
+        model = Service
+        fields = '__all__'
+
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = '__all__'

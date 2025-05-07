@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
-from .models import Beetle, Service
+from .models import Beetle, Service, Article
 
 # Unregister the original User admin
 admin.site.unregister(User)
@@ -24,6 +24,13 @@ class ServiceAdmin(admin.ModelAdmin):
     list_display = ('name', 'price_min', 'price_max')
     list_filter = ('price_min', 'price_max')
     search_fields = ('name', 'description')
+
+# Register Article model
+@admin.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_at', 'updated_at')
+    search_fields = ('title', 'content', 'recommendations')
+    list_filter = ('created_at', 'updated_at')
 
 # Extend UserAdmin to show groups in list display and filter
 @admin.register(User)
