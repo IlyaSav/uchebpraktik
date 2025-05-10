@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявка #{{ request.id }} | Детали</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            border-bottom: none;
+        }
+        
+        .card-body {
+            padding: 2rem;
+        }
+        
+        .info-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .info-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-title i {
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .detail-item {
+            margin-bottom: 0.8rem;
+            display: flex;
+        }
+        
+        .detail-label {
+            font-weight: 500;
+            color: #6c757d;
+            min-width: 150px;
+        }
+        
+        .detail-value {
+            color: var(--dark-color);
+            flex-grow: 1;
+        }
+        
+        .problem-description {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .status-badge {
+            padding: 0.35rem 0.8rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-secondary {
+            border-radius: 8px;
+            padding: 0.5rem 1.5rem;
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 768px) {
+            .card-body {
+                padding: 1.5rem;
+            }
+            
+            .detail-item {
+                flex-direction: column;
+            }
+            
+            .detail-label {
+                margin-bottom: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+{% include 'includes/navbar.html' %}
+
+<div class="container py-4">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="mb-0"><i class="fas fa-file-alt me-2"></i>Заявка #{{ request.id }}</h2>
+            <span class="status-badge bg-{% if request.status == 'completed' %}success{% elif request.status == 'in_progress' %}warning{% elif request.status == 'pending' %}info{% else %}secondary{% endif %}">
+                {{ request.get_status_display }}
+            </span>
+        </div>
+        
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="info-section">
+                        <h5 class="info-title"><i class="fas fa-user-circle"></i>Информация о клиенте</h5>
+                        <div class="detail-item">
+                            <span class="detail-label">ФИО:</span>
+                            <span class="detail-value">{{ request.full_name }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Телефон:</span>
+                            <span class="detail-value">{{ request.phone }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Адрес:</span>
+                            <span class="detail-value">{{ request.address }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                    <div class="info-section">
+                        <h5 class="info-title"><i class="fas fa-info-circle"></i>Информация о заявке</h5>
+                        <div class="detail-item">
+                            <span class="detail-label">Услуга:</span>
+                            <span class="detail-value">{{ request.service.name|default:request.custom_service }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Цена:</span>
+                            <span class="detail-value">{% if request.price %}{{ request.price }} ₽{% else %}Не указана{% endif %}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Дата создания:</span>
+                            <span class="detail-value">{{ request.created_at|date:"d.m.Y H:i" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="problem-description mb-4">
+                <h5 class="info-title"><i class="fas fa-exclamation-circle"></i>Описание проблемы</h5>
+                <div class="bg-light p-3 rounded">
+                    <p class="mb-0">{{ request.problem_description }}</p>
+                </div>
+            </div>
+            
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="status" class="form-label">Изменить статус</label>
+                        <select name="status" id="status" class="form-select">
+                            {% for value, display in status_choices %}
+                            <option value="{{ value }}" {% if request.status == value %}selected{% endif %}>{{ display }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="action-buttons mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Обновить статус
+                    </button>
+                    <a href="{% url 'request_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Назад к списку
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% include 'includes/footer.html' %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

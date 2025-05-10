@@ -2,6 +2,15 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, BeetleForm, ServiceForm, ArticleForm
 from .models import Beetle, Service
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required, user_passes_test
+from .forms import ServiceRequestForm
+from .models import ServiceRequest, Service, RequestStatus
+import json
+from django.http import JsonResponse
+
+
+
 
 def register(request):
     if request.method == 'POST':
@@ -137,4 +146,82 @@ def admin_panel(request):
         'beetles': beetles,
         'services': services,
         'articles': articles,
+    })
+
+@login_required
+def order(request):
+    if request.method == 'POST':
+        form = ServiceRequestForm(request.POST)
+        if form.is_valid():
+            service_request = form.save(commit=False)
+            service_request.user = request.user
+            service_request.save()
+            return redirect('profile')
+    else:
+        form = ServiceRequestForm()
+    
+    services = Service.objects.all()
+    return render(request, 'accounts/order.html', {
+        'form': form,
+        'services': services
+    })
+
+def get_service_price(request):
+    if request.method == 'GET' and request.GET.get('service_id'):
+        service_id = request.GET.get('service_id')
+        try:
+            service = Service.objects.get(id=service_id)
+            return JsonResponse({'price': str(service.price_min)})
+        except Service.DoesNotExist:
+            return JsonResponse({'price': None})
+    return JsonResponse({'price': None})
+
+@login_required
+def profile(request):
+    user_requests = ServiceRequest.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'accounts/profile.html', {
+        'user_requests': user_requests
+    })
+
+
+
+def is_admin_or_manager(user):
+    return user.is_staff or user.groups.filter(name='Менеджер').exists()
+
+@login_required
+@user_passes_test(is_admin_or_manager)
+def request_list(request):
+    requests = ServiceRequest.objects.all().order_by('-created_at')
+    status_choices = RequestStatus.choices
+    
+    if request.method == 'POST':
+        request_id = request.POST.get('request_id')
+        new_status = request.POST.get('status')
+        if request_id and new_status:
+            service_request = ServiceRequest.objects.get(id=request_id)
+            service_request.status = new_status
+            service_request.save()
+            return redirect('request_detail', pk=request_id)
+    
+    return render(request, 'accounts/request_list.html', {
+        'requests': requests,
+        'status_choices': status_choices
+    })
+
+@login_required
+@user_passes_test(is_admin_or_manager)
+def request_detail(request, pk):
+    service_request = get_object_or_404(ServiceRequest, pk=pk)
+    status_choices = RequestStatus.choices
+    
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        if new_status:
+            service_request.status = new_status
+            service_request.save()
+            return redirect('request_detail', pk=pk)
+    
+    return render(request, 'accounts/request_detail.html', {
+        'request': service_request,
+        'status_choices': status_choices
     })

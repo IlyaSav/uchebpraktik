@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 from .forms import EmailAuthenticationForm
+from .views import order, get_service_price
+
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -17,4 +19,8 @@ urlpatterns = [
     path('articles/', views.articles, name='articles'),
     path('reviews/', views.reviews, name='reviews'),
     path('admin-panel/', views.admin_panel, name='admin_panel'),
+    path('order/', order, name='order'),
+    path('get-service-price/', get_service_price, name='get_service_price'),
+    path('requests/', views.request_list, name='request_list'),
+    path('requests/<int:pk>/', views.request_detail, name='request_detail'),
 ]

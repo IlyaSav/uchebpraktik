@@ -18,8 +18,9 @@
             </div>
             {% if user.is_authenticated %}
                 <a href="{% url 'profile' %}">Профиль</a>
-                {% if user.is_staff %}
+                {% if user.is_staff or user.groups.filter.name == 'Менеджер' %}
                     <a href="{% url 'admin_panel' %}">Админская панель</a>
+                    <a href="{% url 'request_list' %}">Просмотр заявок</a>
                 {% endif %}
                 <form method="POST" action="{% url 'logout' %}" style="display:inline;">
                     {% csrf_token %}
@@ -31,13 +32,12 @@
             {% endif %}
         </div>
         
+        <div class="burger-menu" id="burgerMenu" style="order: 2; margin-left: auto;">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </div>
-    <div class="burger-menu" id="burgerMenu" style="order: 2; margin-left: auto;">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-       
 </nav>
 
 <style>
@@ -56,14 +56,6 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
-    z-index: 1001;
 }
 
 .nav-links {
@@ -190,7 +182,6 @@
 }
 
 .burger-menu span {
-    
     display: block;
     height: 3px;
     width: 100%;
@@ -202,7 +193,6 @@
 /* Адаптивность */
 @media (max-width: 992px) {
     .burger-menu {
-        margin-right: 50px;
         display: flex;
     }
     
@@ -293,4 +283,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-</create_file>

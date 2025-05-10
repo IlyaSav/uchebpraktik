@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 
 class Beetle(models.Model):
     name = models.CharField(max_length=100)
@@ -30,3 +32,44 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+class RequestStatus(models.TextChoices):
+    NEW = 'new', 'Новая'
+    IN_PROGRESS = 'in_progress', 'В обработке'
+    COMPLETED = 'completed', 'Завершена'
+    CANCELLED = 'cancelled', 'Отменена'
+
+class ServiceRequest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requests')
+    service = models.ForeignKey('Service', on_delete=models.SET_NULL, null=True, blank=True)
+    custom_service = models.CharField(max_length=200, blank=True, null=True)
+    problem_description = models.TextField()
+    full_name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    address = models.TextField()
+    status = models.CharField(max_length=20, choices=RequestStatus.choices, default=RequestStatus.NEW)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Заявка #{self.id} - {self.get_status_display()}"
+
+    def save(self, *args, **kwargs):
+        if self.service and not self.price:
+            self.price = self.service.price_min
+        super().save(*args, **kwargs)
+
+class Role(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    permissions = models.ManyToManyField(Group)
+
+    def __str__(self):
+        return self.name
+
+# Добавим выбор статусов в ServiceRequest
+class RequestStatus(models.TextChoices):
+    NEW = 'new', 'Новая'
+    VIEWED = 'viewed', 'Просмотрено'
+    IN_PROGRESS = 'in_progress', 'В обработке'
+    COMPLETED = 'completed', 'Услуга оказана'
+    CANCELLED = 'cancelled', 'Отменена'
