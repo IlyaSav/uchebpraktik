@@ -8,134 +8,174 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root {
-            --primary-color: #4361ee;
-            --secondary-color: #3f37c9;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --success-color: #4cc9f0;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #fbbf24;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --border-radius: 1rem;
         }
-        
+
         body {
-            background-color: #f5f7fb;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f8fafc;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
         }
-        
+
         .card {
             border: none;
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+            border-radius: var(--border-radius);
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
         }
-        
+
+        .card:hover {
+            transform: translateY(-0.5rem);
+        }
+
         .card-header {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 1.5rem;
-            border-bottom: none;
-        }
-        
-        .card-body {
             padding: 2rem;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .card-header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 20%, rgba(255,255,255,0.1) 50%, transparent 80%);
+            animation: shine 3s infinite;
+        }
+
+        .status-badge {
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.3s ease;
+        }
+
         .info-section {
-            background-color: white;
-            border-radius: 10px;
+            background: var(--glass-bg);
+            border-radius: calc(var(--border-radius) - 0.5rem);
             padding: 1.5rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(255,255,255,0.3);
         }
-        
-        .info-title {
-            color: var(--primary-color);
-            font-weight: 600;
-            margin-bottom: 1.2rem;
-            font-size: 1.1rem;
+
+        .detail-item {
             display: flex;
             align-items: center;
-        }
-        
-        .info-title i {
-            margin-right: 0.5rem;
-            font-size: 1.2rem;
-        }
-        
-        .detail-item {
-            margin-bottom: 0.8rem;
-            display: flex;
-        }
-        
-        .detail-label {
-            font-weight: 500;
-            color: #6c757d;
-            min-width: 150px;
-        }
-        
-        .detail-value {
-            color: var(--dark-color);
-            flex-grow: 1;
-        }
-        
-        .problem-description {
-            background-color: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        .status-badge {
-            padding: 0.35rem 0.8rem;
-            border-radius: 50px;
-            font-weight: 500;
-            font-size: 0.85rem;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            padding: 0.5rem 1.5rem;
-            border-radius: 8px;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-        }
-        
-        .btn-secondary {
-            border-radius: 8px;
-            padding: 0.5rem 1.5rem;
-        }
-        
-        .form-control {
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            border: 1px solid #e0e0e0;
-        }
-        
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
-        }
-        
-        .action-buttons {
-            display: flex;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
             gap: 1rem;
-            flex-wrap: wrap;
         }
-        
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            border-radius: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .problem-description {
+            background: var(--glass-bg);
+            border-radius: calc(var(--border-radius) - 0.5rem);
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .problem-description::before {
+            content: "“";
+            position: absolute;
+            top: -1.5rem;
+            left: 1rem;
+            font-size: 5rem;
+            color: var(--primary);
+            opacity: 0.1;
+            font-family: serif;
+        }
+
+        .form-select {
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 0.75rem;
+            padding: 1rem 1.5rem;
+            transition: all 0.3s ease;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%236366f1' stroke='%236366f1' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-position: right 1rem center;
+            background-size: 16px 12px;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+        }
+
+        @keyframes shine {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100%); }
+        }
+
         @media (max-width: 768px) {
-            .card-body {
-                padding: 1.5rem;
+            .card {
+                border-radius: 1rem;
+                margin: 1rem;
             }
-            
+
             .detail-item {
                 flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
             }
-            
-            .detail-label {
-                margin-bottom: 0.2rem;
+
+            .detail-icon {
+                width: 2rem;
+                height: 2rem;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -143,81 +183,95 @@
 <body>
 {% include 'includes/navbar.html' %}
 
-<div class="container py-4">
+<div class="container py-5">
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h2 class="mb-0"><i class="fas fa-file-alt me-2"></i>Заявка #{{ request.id }}</h2>
-            <span class="status-badge bg-{% if request.status == 'completed' %}success{% elif request.status == 'in_progress' %}warning{% elif request.status == 'pending' %}info{% else %}secondary{% endif %}">
+            <div class="position-relative">
+                <h2 class="mb-0 fw-bold"><i class="fas fa-file-contract me-2"></i>Заявка #{{ request.id }}</h2>
+                <div class="text-muted mt-1">Создано: {{ request.created_at|date:"d.m.Y H:i" }}</div>
+            </div>
+            <span class="status-badge">
+                <i class="fas fa-circle fa-xs text-{% if request.status == 'completed' %}success{% elif request.status == 'in_progress' %}warning{% else %}info{% endif %}"></i>
                 {{ request.get_status_display }}
             </span>
         </div>
         
         <div class="card-body">
-            <div class="row">
-                <div class="col-lg-6 mb-4">
+            <div class="row g-4">
+                <div class="col-lg-6">
                     <div class="info-section">
-                        <h5 class="info-title"><i class="fas fa-user-circle"></i>Информация о клиенте</h5>
+                        <h5 class="mb-4 fw-semibold text-primary"><i class="fas fa-user-tie me-2"></i>Клиент</h5>
                         <div class="detail-item">
-                            <span class="detail-label">ФИО:</span>
-                            <span class="detail-value">{{ request.full_name }}</span>
+                            <div class="detail-icon"><i class="fas fa-user"></i></div>
+                            <div>
+                                <div class="text-muted small">ФИО</div>
+                                <div class="fw-medium">{{ request.full_name }}</div>
+                            </div>
                         </div>
                         <div class="detail-item">
-                            <span class="detail-label">Телефон:</span>
-                            <span class="detail-value">{{ request.phone }}</span>
+                            <div class="detail-icon"><i class="fas fa-phone"></i></div>
+                            <div>
+                                <div class="text-muted small">Телефон</div>
+                                <div>{{ request.phone }}</div>
+                            </div>
                         </div>
                         <div class="detail-item">
-                            <span class="detail-label">Адрес:</span>
-                            <span class="detail-value">{{ request.address }}</span>
+                            <div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div>
+                                <div class="text-muted small">Адрес</div>
+                                <div>{{ request.address }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-lg-6 mb-4">
+                <div class="col-lg-6">
                     <div class="info-section">
-                        <h5 class="info-title"><i class="fas fa-info-circle"></i>Информация о заявке</h5>
+                        <h5 class="mb-4 fw-semibold text-primary"><i class="fas fa-clipboard-list me-2"></i>Детали</h5>
                         <div class="detail-item">
-                            <span class="detail-label">Услуга:</span>
-                            <span class="detail-value">{{ request.service.name|default:request.custom_service }}</span>
+                            <div class="detail-icon"><i class="fas fa-tools"></i></div>
+                            <div>
+                                <div class="text-muted small">Услуга</div>
+                                <div>{{ request.service.name|default:request.custom_service }}</div>
+                            </div>
                         </div>
                         <div class="detail-item">
-                            <span class="detail-label">Цена:</span>
-                            <span class="detail-value">{% if request.price %}{{ request.price }} ₽{% else %}Не указана{% endif %}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Дата создания:</span>
-                            <span class="detail-value">{{ request.created_at|date:"d.m.Y H:i" }}</span>
+                            <div class="detail-icon"><i class="fas fa-coins"></i></div>
+                            <div>
+                                <div class="text-muted small">Стоимость</div>
+                                <div>{% if request.price %}{{ request.price }} ₽{% else %}—{% endif %}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <div class="problem-description mb-4">
-                <h5 class="info-title"><i class="fas fa-exclamation-circle"></i>Описание проблемы</h5>
-                <div class="bg-light p-3 rounded">
-                    <p class="mb-0">{{ request.problem_description }}</p>
-                </div>
+            <div class="problem-description">
+                <h5 class="mb-4 fw-semibold text-primary"><i class="fas fa-exclamation-circle me-2"></i>Описание проблемы</h5>
+                <div class="lead">{{ request.problem_description }}</div>
             </div>
             
-            <form method="post" class="mt-4">
+            <form method="post" class="mt-5">
                 {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="status" class="form-label">Изменить статус</label>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="status" class="form-label fw-medium">Обновить статус</label>
                         <select name="status" id="status" class="form-select">
                             {% for value, display in status_choices %}
                             <option value="{{ value }}" {% if request.status == value %}selected{% endif %}>{{ display }}</option>
                             {% endfor %}
                         </select>
                     </div>
-                </div>
-                
-                <div class="action-buttons mt-3">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-2"></i>Обновить статус
-                    </button>
-                    <a href="{% url 'request_list' %}" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left me-2"></i>Назад к списку
-                    </a>
+                    <div class="col-12">
+                        <div class="d-flex gap-3 mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Сохранить изменения
+                            </button>
+                            <a href="{% url 'request_list' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-arrow-left me-2"></i>К списку
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
@@ -227,5 +281,6 @@
 {% include 'includes/footer.html' %}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% include 'includes/base.html' %}
 </body>
 </html>

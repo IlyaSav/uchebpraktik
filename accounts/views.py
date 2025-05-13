@@ -8,6 +8,8 @@ from .forms import ServiceRequestForm
 from .models import ServiceRequest, Service, RequestStatus
 import json
 from django.http import JsonResponse
+from .models import Review
+from .forms import ReviewForm
 
 
 
@@ -225,3 +227,44 @@ def request_detail(request, pk):
         'request': service_request,
         'status_choices': status_choices
     })
+
+
+def reviews(request):
+    services = Service.objects.all()
+    reviews_list = Review.objects.order_by('-created_at')
+    
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            if request.user.is_authenticated:
+                review.user = request.user
+                if not review.name:  # Если имя не указано, используем имя пользователя
+                    review.name = request.user.username
+            review.save()
+            return redirect('reviews')
+    else:
+        initial = {}
+        if request.user.is_authenticated:
+            initial['name'] = request.user.get_full_name() or request.user.username
+        form = ReviewForm(initial=initial)
+    
+    return render(request, 'accounts/reviews.html', {
+        'reviews': reviews_list,
+        'form': form,
+        'services': services
+    })
+
+from .models import SiteSettings
+
+def get_global_context():
+    return {
+        'site_settings': SiteSettings.objects.first() or SiteSettings(phone_number="+79508102029")
+    }
+
+# Добавьте этот миксин ко всем вашим вьюхам
+class GlobalContextMixin:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_global_context())
+        return context

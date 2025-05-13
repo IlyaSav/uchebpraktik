@@ -23,4 +23,5 @@ urlpatterns = [
     path('get-service-price/', get_service_price, name='get_service_price'),
     path('requests/', views.request_list, name='request_list'),
     path('requests/<int:pk>/', views.request_detail, name='request_detail'),
+    path('services/<int:pk>/', views.service_detail, name='service_detail'),
 ]

@@ -3,13 +3,264 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Отзывы</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Отзывы клиентов | Сервисный центр</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+            --secondary-gradient: linear-gradient(135deg, #4cc9f0 0%, #3f37c9 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --shadow-color: rgba(67, 97, 238, 0.15);
+            --text-dark: #2b2d42;
+            --text-muted: #6c757d;
+        }
+        
+        body {
+            background: #f8f9ff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-dark);
+            letter-spacing: -0.01em;
+        }
+        
+        .container {
+            max-width: 1200px;
+        }
+        
+        h1, h2, h3 {
+            font-weight: 700;
+            letter-spacing: -0.03em;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px var(--shadow-color);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px var(--shadow-color);
+        }
+        
+        /* Форма отзыва */
+        .review-form-card {
+            background: var(--glass-bg);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .review-form-card .card-title {
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .review-form-card .card-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+        }
+        
+        /* Элементы формы */
+        .form-control, .form-select {
+            border-radius: 12px;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #4361ee;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+        }
+        
+        /* Кнопка отправки */
+        .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--shadow-color);
+        }
+        
+        /* Карточки отзывов */
+        .review-card {
+            height: 100%;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .review-card .card-body {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .review-card .card-title {
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+        
+        .review-card .card-text {
+            flex-grow: 1;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .review-date {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        
+        .service-badge {
+            background: rgba(67, 97, 238, 0.1);
+            color: #4361ee;
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .review-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .review-card:nth-child(1) { animation-delay: 0.1s; }
+        .review-card:nth-child(2) { animation-delay: 0.2s; }
+        .review-card:nth-child(3) { animation-delay: 0.3s; }
+        .review-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        /* Пустой список */
+        .empty-reviews {
+            background: var(--glass-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px dashed rgba(67, 97, 238, 0.3);
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .card {
+                border-radius: 16px;
+            }
+            
+            .review-card {
+                margin-bottom: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
 {% include 'includes/navbar.html' %}
-<h1>Отзывы</h1>
-<p>Просмотр и добавление отзывов клиентов.</p>
+
+<div class="container py-5">
+    <!-- Заголовок -->
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold mb-3">Отзывы наших клиентов</h1>
+        <p class="lead text-muted">Ваше мнение помогает нам становиться лучше</p>
+    </div>
+    
+    <!-- Форма для добавления отзыва -->
+    <div class="card review-form-card mb-5">
+        <div class="card-body p-4 p-md-5">
+            <h2 class="card-title h3 mb-4"><i class="fas fa-pen-alt me-2"></i>Оставить отзыв</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form.name }}
+                            <label for="{{ form.name.id_for_label }}">Ваше имя</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            {{ form.service }}
+                            <label for="{{ form.service.id_for_label }}">Услуга</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-floating">
+                            {{ form.text }}
+                            <label for="{{ form.text.id_for_label }}">Текст отзыва</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary px-4 py-2">
+                            <i class="fas fa-paper-plane me-2"></i>Отправить отзыв
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Список отзывов -->
+    <h2 class="h3 mb-4"><i class="fas fa-comments me-2"></i>Последние отзывы</h2>
+    
+    {% if reviews %}
+        <div class="row g-4">
+            {% for review in reviews %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card review-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h3 class="h5 card-title mb-0">{{ review.name }}</h3>
+                                <small class="review-date">{{ review.created_at|date:"d.m.Y H:i" }}</small>
+                            </div>
+                            {% if review.service %}
+                                <span class="service-badge mb-3">
+                                    <i class="fas fa-tag"></i>{{ review.service.name }}
+                                </span>
+                            {% endif %}
+                            <p class="card-text mb-0">{{ review.text }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-reviews">
+            <i class="fas fa-comment-slash text-muted mb-3" style="font-size: 3rem;"></i>
+            <h3 class="h4 mb-2">Пока нет отзывов</h3>
+            <p class="text-muted mb-0">Будьте первым, кто оставит отзыв о нашей работе!</p>
+        </div>
+    {% endif %}
+</div>
+
 {% include 'includes/footer.html' %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% include 'includes/base.html' %}
 </body>
 </html>

@@ -9,171 +9,219 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #3A7D44;
-            --primary-light: #E8F5E9;
-            --accent: #6D9E76;
+            --primary: #5D9C59;
+            --primary-light: #DFF6DD;
+            --primary-dark: #3A7D44;
+            --accent: #FFD166;
+            --danger: #EF476F;
             --dark: #2D3436;
-            --light: #F5F7F7;
-            --gray: #7F8C8D;
-            --border: #DFE6E9;
+            --light: #F7F9F9;
             --card-bg: #FFFFFF;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
         }
         
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--light);
+            background: linear-gradient(135deg, #F0F4F8 0%, #E1E8ED 100%);
             color: var(--dark);
             min-height: 100vh;
             line-height: 1.6;
+            letter-spacing: -0.01em;
         }
         
         .profile-container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            border-radius: 12px;
+            max-width: 1200px;
+            margin: 3rem auto;
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-lg);
             background: var(--card-bg);
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
         
         .profile-header {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 2.5rem 2rem;
+            padding: 3rem 2rem;
             text-align: center;
             position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 60%, rgba(255, 255, 255, 0.15));
+            pointer-events: none;
         }
         
         .profile-title {
-            font-size: 1.8rem;
-            font-weight: 600;
+            font-size: 2.2rem;
+            font-weight: 700;
             margin-bottom: 0.5rem;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.03em;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .profile-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
         }
         
         .profile-subtitle {
-            font-size: 1rem;
+            font-size: 1.1rem;
             opacity: 0.9;
             font-weight: 400;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
         }
         
         .profile-content {
-            padding: 2rem;
+            padding: 3rem;
         }
         
+        /* Карточки информации */
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-bottom: 3rem;
         }
         
         .info-card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 1.5rem;
-            border: 1px solid var(--border);
-            transition: all 0.2s ease;
+            background: var(--glass-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         
         .info-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 5px 15px rgba(58, 125, 68, 0.08);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(93, 156, 89, 0.3);
+        }
+        
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(93, 156, 89, 0.03) 0%, transparent 100%);
+            pointer-events: none;
         }
         
         .info-icon {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--primary-light);
+            background: rgba(93, 156, 89, 0.1);
             color: var(--primary);
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover .info-icon {
+            background: var(--primary);
+            color: white;
+            transform: rotate(5deg) scale(1.1);
         }
         
         .info-label {
-            font-size: 0.85rem;
-            color: var(--gray);
+            font-size: 0.9rem;
+            color: #6B7280;
             font-weight: 500;
             margin-bottom: 0.5rem;
             letter-spacing: 0.3px;
         }
         
         .info-value {
-            font-size: 1.1rem;
-            font-weight: 500;
+            font-size: 1.3rem;
+            font-weight: 600;
             color: var(--dark);
             margin: 0;
+            line-height: 1.3;
         }
         
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.2s ease;
-            font-size: 0.9rem;
-            border: 1px solid transparent;
-        }
-        
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #2E6B37;
-            transform: translateY(-1px);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border-color: var(--border);
+        /* Таблица заявок */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
             color: var(--dark);
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
         }
         
-        .btn-outline:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: var(--primary-light);
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
         }
         
-        /* Стили для таблицы */
+        .requests-container {
+            background: var(--glass-bg);
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
         .requests-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            margin: 2rem 0;
+        }
+        
+        .requests-table thead {
+            background: linear-gradient(135deg, rgba(93, 156, 89, 0.1) 0%, rgba(93, 156, 89, 0.05) 100%);
         }
         
         .requests-table th {
-            background: var(--light);
-            color: var(--gray);
-            font-weight: 500;
+            color: var(--primary-dark);
+            font-weight: 600;
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            padding: 0.75rem 1rem;
+            padding: 1rem 1.5rem;
             text-align: left;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .requests-table td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border);
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             vertical-align: middle;
             color: var(--dark);
         }
@@ -182,85 +230,209 @@
             border-bottom: none;
         }
         
-        /* Стили для статусов */
+        .requests-table tr:hover td {
+            background: rgba(93, 156, 89, 0.03);
+        }
+        
+        /* Статусы */
         .status-badge {
-            font-size: 0.75rem;
-            font-weight: 500;
-            padding: 0.45rem 0.8rem;
-            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.5rem;
             line-height: 1;
         }
         
         .status-new {
-            background-color: #E3F2FD;
-            color: #0D47A1;
-            border-left: 3px solid #2196F3;
+            background: rgba(59, 130, 246, 0.1);
+            color: #3B82F6;
         }
         
         .status-in-progress {
-            background-color: #FFF8E1;
-            color: #E65100;
-            border-left: 3px solid #FFC107;
+            background: rgba(234, 179, 8, 0.1);
+            color: #EAB308;
         }
         
         .status-completed {
-            background-color: #E8F5E9;
-            color: #1B5E20;
-            border-left: 3px solid #4CAF50;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
         }
         
         .status-cancelled {
-            background-color: #EFEBE9;
-            color: #3E2723;
-            border-left: 3px solid #8D6E63;
+            background: rgba(239, 68, 68, 0.1);
+            color: #EF4444;
         }
         
-        .status-badge i {
-            font-size: 0.65rem;
+        /* Кнопки */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
         }
         
-        .alert {
-            border-radius: 8px;
-            padding: 1.25rem;
-            background: var(--light);
-            border: 1px solid var(--border);
-            color: var(--gray);
-        }
-        
-        .table-responsive {
-            border-radius: 8px;
+        .btn {
+            padding: 0.9rem 1.8rem;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            position: relative;
             overflow: hidden;
-            border: 1px solid var(--border);
         }
         
-        @media (max-width: 768px) {
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.2));
+            pointer-events: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(93, 156, 89, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(93, 156, 89, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--dark);
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(93, 156, 89, 0.05);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #D63031 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+        }
+        
+        /* Пустое состояние */
+        .empty-state {
+            padding: 3rem 2rem;
+            text-align: center;
+            background: var(--glass-bg);
+            border-radius: 16px;
+            border: 1px dashed rgba(93, 156, 89, 0.3);
+            margin: 2rem 0;
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            opacity: 0.7;
+        }
+        
+        .empty-text {
+            font-size: 1.1rem;
+            color: #6B7280;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .info-card {
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+        }
+        
+        .info-card:nth-child(1) { animation-delay: 0.1s; }
+        .info-card:nth-child(2) { animation-delay: 0.2s; }
+        .info-card:nth-child(3) { animation-delay: 0.3s; }
+        .info-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        .requests-table tr {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .requests-table tr:nth-child(1) { animation-delay: 0.1s; }
+        .requests-table tr:nth-child(2) { animation-delay: 0.2s; }
+        .requests-table tr:nth-child(3) { animation-delay: 0.3s; }
+        .requests-table tr:nth-child(4) { animation-delay: 0.4s; }
+        
+        /* Адаптивность */
+        @media (max-width: 992px) {
             .profile-container {
-                margin: 1rem;
-                border-radius: 10px;
+                margin: 1.5rem;
+                border-radius: 20px;
             }
             
             .profile-header {
-                padding: 1.75rem 1rem;
-            }
-            
-            .profile-title {
-                font-size: 1.5rem;
+                padding: 2.5rem 1.5rem;
             }
             
             .profile-content {
-                padding: 1.5rem;
+                padding: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .profile-title {
+                font-size: 1.8rem;
             }
             
             .info-grid {
                 grid-template-columns: 1fr;
             }
             
+            .action-buttons {
+                flex-direction: column;
+            }
+            
             .btn {
                 width: 100%;
                 justify-content: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .profile-header {
+                padding: 2rem 1rem;
+            }
+            
+            .profile-content {
+                padding: 1.5rem;
+            }
+            
+            .info-card {
+                padding: 1.5rem;
+            }
+            
+            .requests-table th, 
+            .requests-table td {
+                padding: 1rem;
             }
         }
     </style>
@@ -279,20 +451,22 @@
         <div class="info-grid">
             <div class="info-card">
                 <div class="info-icon">
-                    <i class="fas fa-user"></i>
+                    <i class="fas fa-user-tie"></i>
                 </div>
                 <div class="info-label">Имя пользователя</div>
                 <div class="info-value">{{ request.user.username }}</div>
                 {% if request.user.is_staff %}
-                <div class="mt-2">
-                    <span class="badge badge-primary">Администратор</span>
+                <div class="mt-3">
+                    <span class="status-badge status-completed">
+                        <i class="fas fa-shield-alt"></i> Администратор
+                    </span>
                 </div>
                 {% endif %}
             </div>
             
             <div class="info-card">
                 <div class="info-icon">
-                    <i class="fas fa-envelope"></i>
+                    <i class="fas fa-envelope-open-text"></i>
                 </div>
                 <div class="info-label">Электронная почта</div>
                 <div class="info-value">{{ request.user.email }}</div>
@@ -300,15 +474,15 @@
             
             <div class="info-card">
                 <div class="info-icon">
-                    <i class="fas fa-calendar-day"></i>
+                    <i class="fas fa-calendar-check"></i>
                 </div>
                 <div class="info-label">Дата регистрации</div>
-                <div class="info-value">{{ request.user.date_joined|date:"d.m.Y" }}</div>
+                <div class="info-value">{{ request.user.date_joined|date:"d M Y" }}</div>
             </div>
             
             <div class="info-card">
                 <div class="info-icon">
-                    <i class="fas fa-shield-alt"></i>
+                    <i class="fas fa-user-shield"></i>
                 </div>
                 <div class="info-label">Статус аккаунта</div>
                 <div class="info-value">
@@ -326,10 +500,10 @@
         </div>
         
         <!-- История заявок -->
-        <h4 class="mb-3" style="font-weight: 600; color: var(--dark);">История заявок</h4>
+        <h4 class="section-title">История заявок</h4>
         
         {% if user_requests %}
-        <div class="table-responsive">
+        <div class="requests-container">
             <table class="requests-table">
                 <thead>
                     <tr>
@@ -338,7 +512,7 @@
                         <th>Услуга</th>
                         <th>Статус</th>
                         <th>Стоимость</th>
-                        <th></th>
+                        <th>Действия</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -361,7 +535,7 @@
                                 {% else %}status-cancelled{% endif %}">
                                 <i class="fas 
                                     {% if req.status == 'new' %}fa-clock
-                                    {% elif req.status == 'in_progress' %}fa-spinner
+                                    {% elif req.status == 'in_progress' %}fa-spinner fa-pulse
                                     {% elif req.status == 'completed' %}fa-check-circle
                                     {% else %}fa-times-circle{% endif %}"></i>
                                 {{ req.get_status_display }}
@@ -369,13 +543,19 @@
                         </td>
                         <td>
                             {% if req.price %}
-                                {{ req.price }} ₽
+                                <span class="fw-bold">{{ req.price }} ₽</span>
                             {% else %}
-                                -
+                                <span class="text-muted">—</span>
                             {% endif %}
                         </td>
-                        <td class="text-end">
-                            <a href="#" class="btn btn-sm btn-outline">Подробнее</a>
+                        <td>
+                            {% if req.service %}
+                                <a href="{% url 'service_detail' req.service.id %}" class="btn btn-sm btn-outline">
+                                    <i class="fas fa-eye"></i> Подробнее
+                                </a>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
@@ -383,20 +563,26 @@
             </table>
         </div>
         {% else %}
-        <div class="alert">
-            <i class="fas fa-info-circle me-2"></i> У вас пока нет заявок. 
-            <a href="{% url 'order' %}" style="color: var(--primary); text-decoration: none; font-weight: 500;">Создать новую заявку</a>
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-clipboard-list"></i>
+            </div>
+            <h5 class="fw-bold mb-3">Заявок пока нет</h5>
+            <p class="empty-text">Вы еще не создавали заявок в нашем сервисе</p>
+            <a href="{% url 'order' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Создать первую заявку
+            </a>
         </div>
         {% endif %}
         
         <!-- Действия -->
-        <div class="action-buttons mt-4">
+        <div class="action-buttons">
             <a href="{% url 'order' %}" class="btn btn-primary">
                 <i class="fas fa-plus"></i> Новая заявка
             </a>
             <form method="POST" action="{% url 'logout' %}" class="d-inline">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-outline">
+                <button type="submit" class="btn btn-danger">
                     <i class="fas fa-sign-out-alt"></i> Выйти
                 </button>
             </form>
@@ -408,20 +594,20 @@
 <script>
     // Плавное появление элементов
     document.addEventListener('DOMContentLoaded', () => {
-        const elements = document.querySelectorAll('.info-card, .requests-table tr, .alert');
-        elements.forEach((el, i) => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(10px)';
-            el.style.transition = 'all 0.3s ease';
-            
-            setTimeout(() => {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-            }, 100 + (i * 50));
+        const cards = document.querySelectorAll('.info-card');
+        const rows = document.querySelectorAll('.requests-table tr');
+        
+        cards.forEach((card, i) => {
+            card.style.animationDelay = `${i * 0.1}s`;
+        });
+        
+        rows.forEach((row, i) => {
+            row.style.animationDelay = `${i * 0.1 + 0.4}s`;
         });
     });
 </script>
 
 {% include 'includes/footer.html' %}
+{% include 'includes/base.html' %}
 </body>
 </html>

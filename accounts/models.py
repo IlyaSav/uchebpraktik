@@ -73,3 +73,24 @@ class RequestStatus(models.TextChoices):
     IN_PROGRESS = 'in_progress', 'В обработке'
     COMPLETED = 'completed', 'Услуга оказана'
     CANCELLED = 'cancelled', 'Отменена'
+
+
+class Review(models.Model):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True, blank=True, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
+    name = models.CharField(max_length=100, verbose_name="Имя")
+    text = models.TextField(verbose_name="Текст отзыва")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    
+    def __str__(self):
+        return f"Отзыв от {self.name} ({self.created_at.strftime('%d.%m.%Y')})"
+    
+
+class SiteSettings(models.Model):
+    phone_number = models.CharField(max_length=20, verbose_name="Телефон для связи")
+    
+    def __str__(self):
+        return self.phone_number
+
+    class Meta:
+        verbose_name = "Настройки сайта"

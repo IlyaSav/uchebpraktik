@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
 from .models import Beetle, Service, Article
+from .models import SiteSettings
 
 # Unregister the original User admin
 admin.site.unregister(User)
@@ -49,3 +50,10 @@ class UserAdmin(BaseUserAdmin):
     def get_groups(self, obj):
         return ", ".join([g.name for g in obj.groups.all()])
     get_groups.short_description = 'Роли'
+
+
+@admin.register(SiteSettings)
+class SiteSettingsAdmin(admin.ModelAdmin):
+    list_display = ('phone_number',)
+    def has_add_permission(self, request):
+        return not SiteSettings.objects.exists()

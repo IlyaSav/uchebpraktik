@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils.translation import gettext_lazy as _
 from .models import Beetle, Service, Article
 from .models import ServiceRequest, Service
+from .models import Review
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -68,3 +69,19 @@ class ServiceRequestForm(forms.ModelForm):
         if not cleaned_data.get('service') and not cleaned_data.get('custom_service'):
             raise forms.ValidationError("Укажите тип услуги или опишите проблему")
         return cleaned_data
+    
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['service', 'name', 'text']
+        widgets = {
+            'service': forms.Select(attrs={'class': 'form-select'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ваше имя'}),
+            'text': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ваш отзыв', 'rows': 4}),
+        }
+        labels = {
+            'service': 'Услуга (необязательно)',
+            'name': 'Ваше имя',
+            'text': 'Текст отзыва',
+        }

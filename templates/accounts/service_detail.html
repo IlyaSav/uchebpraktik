@@ -13,12 +13,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <style>
         :root {
-            --primary: #2E7D32; /* Глубокий "санитарный" зеленый */
-            --primary-light: #4CAF50; /* Светло-зеленый для акцентов */
-            --accent: #FFC107; /* Желтый для предупреждений */
-            --dark: #263238; /* Темно-серый для текста */
-            --light: #F5F5F5; /* Светлый фон */
-            --clean-white: #FFFFFF; /* Чистый белый */
+            --primary: #2E7D32;
+            --primary-light: #4CAF50;
+            --accent: #FFC107;
+            --dark: #263238;
+            --light: #F5F5F5;
+            --clean-white: #FFFFFF;
         }
 
         body {
@@ -76,7 +76,7 @@
         }
 
         .btn-primary:hover {
-            background-color: #256b27; /* Slightly darker green */
+            background-color: #256b27;
             transform: translateY(-2px);
         }
 
@@ -96,7 +96,6 @@
             color: var(--primary);
         }
 
-        /* Center the main content */
         .main-content {
             max-width: 900px;
             margin: 0 auto;
@@ -138,26 +137,84 @@
             font-size: 1.5rem;
         }
 
-        .work-step-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-
-        .work-step-desc {
-            font-size: 0.9rem;
-            color: var(--dark);
-        }
-
-        .back-button {
+        /* Стили для отзывов */
+        .reviews-section {
             max-width: 900px;
-            margin: 2rem auto 3rem auto;
+            margin: 3rem auto;
+            padding: 0 15px;
+        }
+
+        .review-card {
+            background: var(--clean-white);
+            border: 2px solid rgba(46, 125, 50, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(46, 125, 50, 0.08);
+            border-color: var(--primary-light);
+        }
+
+        .review-card::before {
+            content: "\f10d";
+            font-family: "Font Awesome 6 Free";
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            color: rgba(46, 125, 50, 0.15);
+            font-size: 2.5rem;
+            z-index: 1;
+        }
+
+        .review-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem 2rem 1.5rem;
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .review-author {
+            color: var(--primary);
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .review-date {
+            color: #78909c;
+            font-size: 0.9rem;
+            margin-left: auto;
+        }
+
+        .review-text {
+            color: var(--dark);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .no-reviews-alert {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--primary);
+            border: 2px dashed var(--primary-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
 {% include 'includes/navbar.html' %}
-<!-- Service Details -->
+
+<!-- Основной контент -->
 <div class="container mb-5 main-content">
     <div class="card-service p-4 p-md-5">
         <div class="mb-4">
@@ -165,6 +222,8 @@
                 <i class="fas fa-arrow-left me-2"></i>Вернуться к списку услуг
             </a>
         </div>
+        
+        <!-- Описание услуги -->
         <div class="row g-4 mb-4">
             <div class="col-md-6">
                 <div class="overflow-hidden rounded-3">
@@ -195,6 +254,7 @@
             </div>
         </div>
 
+        <!-- Процесс работы -->
         <h4 class="section-header">Как мы работаем</h4>
         <div class="row g-4 mb-4">
             <div class="col-md-4">
@@ -228,9 +288,40 @@
     </div>
 </div>
 
+<!-- Секция с отзывами -->
+<div class="reviews-section">
+    <h4 class="section-header">Отзывы о данной услуге</h4>
+    
+    <div class="row g-4">
+        {% if service.reviews.all %}
+            {% for review in service.reviews.all %}
+                <div class="col-12">
+                    <div class="review-card">
+                        <div class="review-content">
+                            <div class="review-header">
+                                <h5 class="review-author">{{ review.name }}</h5>
+                                <span class="review-date">{{ review.created_at|date:"d.m.Y" }}</span>
+                            </div>
+                            <p class="review-text">{{ review.text }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="no-reviews-alert">
+                    <i class="fas fa-comment-slash me-2"></i>
+                    Пока нет отзывов об этой услуге
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
 {% include 'includes/footer.html' %}
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% include 'includes/base.html' %}
 </body>
 </html>
