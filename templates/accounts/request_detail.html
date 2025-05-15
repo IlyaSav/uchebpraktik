@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -8,41 +9,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --accent: #f59e0b;
-            --success: #10b981;
-            --warning: #fbbf24;
-            --glass-bg: rgba(255, 255, 255, 0.95);
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
-            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-            --border-radius: 1rem;
+            --primary: #2ECC71;
+            --primary-dark: #27AE60;
+            --accent: #F1C40F;
+            --danger: #E74C3C;
+            --dark: #2C3E50;
+            --background: #ECF0F1;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --border: rgba(0, 0, 0, 0.08);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+            --border-radius: 12px;
         }
 
         body {
-            background: #f8fafc;
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--background);
+            color: var(--dark);
             min-height: 100vh;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .main-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
         }
 
         .card {
-            border: none;
+            background: var(--card-bg);
             border-radius: var(--border-radius);
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
             box-shadow: var(--shadow-md);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-0.5rem);
+            transform: translateY(-4px);
         }
 
         .card-header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: var(--primary);
             color: white;
-            padding: 2rem;
+            padding: 1.5rem;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             position: relative;
             overflow: hidden;
         }
@@ -54,37 +68,56 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent 20%, rgba(255,255,255,0.1) 50%, transparent 80%);
-            animation: shine 3s infinite;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.15) 50%, transparent 70%);
+            animation: shine 4s infinite;
         }
 
         .status-badge {
-            padding: 0.6rem 1.2rem;
-            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
             font-weight: 600;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
+            background: var(--card-bg);
             box-shadow: var(--shadow-sm);
             display: inline-flex;
             align-items: center;
-            gap: 0.6rem;
-            transition: all 0.3s ease;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .status-new {
+            color: #3498DB;
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .status-in-progress {
+            color: var(--accent);
+            background: rgba(241, 196, 15, 0.1);
+        }
+
+        .status-completed {
+            color: var(--primary);
+            background: rgba(46, 204, 113, 0.1);
+        }
+
+        .status-cancelled {
+            color: var(--danger);
+            background: rgba(231, 76, 60, 0.1);
         }
 
         .info-section {
-            background: var(--glass-bg);
-            border-radius: calc(var(--border-radius) - 0.5rem);
-            padding: 1.5rem;
+            padding: 1.25rem;
             margin-bottom: 1.5rem;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border);
             box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(255,255,255,0.3);
         }
 
         .detail-item {
             display: flex;
             align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
             gap: 1rem;
         }
 
@@ -93,77 +126,133 @@
         }
 
         .detail-icon {
-            width: 2.5rem;
-            height: 2.5rem;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(46, 204, 113, 0.1);
             color: var(--primary);
-            border-radius: 0.75rem;
+            border-radius: 8px;
+            font-size: 1rem;
             flex-shrink: 0;
         }
 
+        .detail-label {
+            font-size: 0.75rem;
+            color: #7F8C8D;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
         .problem-description {
-            background: var(--glass-bg);
-            border-radius: calc(var(--border-radius) - 0.5rem);
-            padding: 2rem;
-            margin: 2rem 0;
-            position: relative;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
             box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            position: relative;
         }
 
         .problem-description::before {
             content: "“";
             position: absolute;
-            top: -1.5rem;
+            top: -1rem;
             left: 1rem;
-            font-size: 5rem;
+            font-size: 4rem;
             color: var(--primary);
             opacity: 0.1;
             font-family: serif;
         }
 
         .form-select {
-            border: 1px solid rgba(0,0,0,0.1);
-            border-radius: 0.75rem;
-            padding: 1rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.9rem;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%232ECC71' stroke='%232ECC71' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-position: right 0.75rem center;
+            background-size: 14px 10px;
             transition: all 0.3s ease;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='%236366f1' stroke='%236366f1' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-            background-position: right 1rem center;
-            background-size: 16px 12px;
         }
 
         .form-select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--primary);
+            color: white;
         }
 
         .btn-primary:hover {
+            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline-primary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--dark);
+        }
+
+        .btn-outline-primary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(46, 204, 113, 0.05);
         }
 
         @keyframes shine {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(100%); }
+            from { transform: translateX(-100%) rotate(-45deg); }
+            to { transform: translateX(100%) rotate(-45deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .info-section, .problem-description, .detail-item {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @media (max-width: 992px) {
+            .main-container {
+                margin: 1rem auto;
+            }
+
+            .card {
+                margin: 0 0.5rem;
+            }
         }
 
         @media (max-width: 768px) {
-            .card {
-                border-radius: 1rem;
-                margin: 1rem;
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1rem;
             }
 
             .detail-item {
@@ -173,9 +262,50 @@
             }
 
             .detail-icon {
-                width: 2rem;
-                height: 2rem;
+                width: 36px;
+                height: 36px;
                 font-size: 0.9rem;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .problem-description {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card {
+                margin: 0;
+            }
+
+            .card-header {
+                padding: 0.75rem;
+            }
+
+            .info-section {
+                padding: 1rem;
+            }
+
+            .detail-label {
+                font-size: 0.7rem;
+            }
+
+            .detail-value {
+                font-size: 0.85rem;
+            }
+
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .form-select {
+                font-size: 0.85rem;
+                padding: 0.5rem;
             }
         }
     </style>
@@ -183,43 +313,47 @@
 <body>
 {% include 'includes/navbar.html' %}
 
-<div class="container py-5">
+<div class="main-container">
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <div class="position-relative">
+        <div class="card-header">
+            <div>
                 <h2 class="mb-0 fw-bold"><i class="fas fa-file-contract me-2"></i>Заявка #{{ request.id }}</h2>
-                <div class="text-muted mt-1">Создано: {{ request.created_at|date:"d.m.Y H:i" }}</div>
+                <div class="text-light small mt-1">Создано: {{ request.created_at|date:"d.m.Y H:i" }}</div>
             </div>
-            <span class="status-badge">
-                <i class="fas fa-circle fa-xs text-{% if request.status == 'completed' %}success{% elif request.status == 'in_progress' %}warning{% else %}info{% endif %}"></i>
+            <span class="status-badge 
+                {% if request.status == 'new' %}status-new
+                {% elif request.status == 'in_progress' %}status-in-progress
+                {% elif request.status == 'completed' %}status-completed
+                {% else %}status-cancelled{% endif %}">
+                <i class="fas fa-circle fa-xs"></i>
                 {{ request.get_status_display }}
             </span>
         </div>
         
-        <div class="card-body">
+        <div class="card-body p-4">
             <div class="row g-4">
                 <div class="col-lg-6">
                     <div class="info-section">
-                        <h5 class="mb-4 fw-semibold text-primary"><i class="fas fa-user-tie me-2"></i>Клиент</h5>
+                        <h5 class="mb-3 fw-semibold text-primary"><i class="fas fa-user-tie me-2"></i>Клиент</h5>
                         <div class="detail-item">
                             <div class="detail-icon"><i class="fas fa-user"></i></div>
                             <div>
-                                <div class="text-muted small">ФИО</div>
-                                <div class="fw-medium">{{ request.full_name }}</div>
+                                <div class="detail-label">ФИО</div>
+                                <div class="detail-value">{{ request.full_name }}</div>
                             </div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-icon"><i class="fas fa-phone"></i></div>
                             <div>
-                                <div class="text-muted small">Телефон</div>
-                                <div>{{ request.phone }}</div>
+                                <div class="detail-label">Телефон</div>
+                                <div class="detail-value">{{ request.phone }}</div>
                             </div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div>
                             <div>
-                                <div class="text-muted small">Адрес</div>
-                                <div>{{ request.address }}</div>
+                                <div class="detail-label">Адрес</div>
+                                <div class="detail-value">{{ request.address }}</div>
                             </div>
                         </div>
                     </div>
@@ -227,19 +361,19 @@
                 
                 <div class="col-lg-6">
                     <div class="info-section">
-                        <h5 class="mb-4 fw-semibold text-primary"><i class="fas fa-clipboard-list me-2"></i>Детали</h5>
+                        <h5 class="mb-3 fw-semibold text-primary"><i class="fas fa-clipboard-list me-2"></i>Детали</h5>
                         <div class="detail-item">
                             <div class="detail-icon"><i class="fas fa-tools"></i></div>
                             <div>
-                                <div class="text-muted small">Услуга</div>
-                                <div>{{ request.service.name|default:request.custom_service }}</div>
+                                <div class="detail-label">Услуга</div>
+                                <div class="detail-value">{{ request.service.name|default:request.custom_service }}</div>
                             </div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-icon"><i class="fas fa-coins"></i></div>
                             <div>
-                                <div class="text-muted small">Стоимость</div>
-                                <div>{% if request.price %}{{ request.price }} ₽{% else %}—{% endif %}</div>
+                                <div class="detail-label">Стоимость</div>
+                                <div class="detail-value">{% if request.price %}{{ request.price }} ₽{% else %}—{% endif %}</div>
                             </div>
                         </div>
                     </div>
@@ -247,11 +381,11 @@
             </div>
             
             <div class="problem-description">
-                <h5 class="mb-4 fw-semibold text-primary"><i class="fas fa-exclamation-circle me-2"></i>Описание проблемы</h5>
+                <h5 class="mb-3 fw-semibold text-primary"><i class="fas fa-exclamation-circle me-2"></i>Описание проблемы</h5>
                 <div class="lead">{{ request.problem_description }}</div>
             </div>
             
-            <form method="post" class="mt-5">
+            <form method="post" class="mt-4">
                 {% csrf_token %}
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -263,9 +397,9 @@
                         </select>
                     </div>
                     <div class="col-12">
-                        <div class="d-flex gap-3 mt-4">
+                        <div class="d-flex gap-3 mt-3">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Сохранить изменения
+                                <i class="fas fa-save me-2"></i>Сохранить
                             </button>
                             <a href="{% url 'request_list' %}" class="btn btn-outline-primary">
                                 <i class="fas fa-arrow-left me-2"></i>К списку
@@ -281,6 +415,13 @@
 {% include 'includes/footer.html' %}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const items = document.querySelectorAll('.detail-item');
+        items.forEach((item, i) => {
+            item.style.animationDelay = `${i * 0.1}s`;
+        });
+    });
+</script>
 </body>
 </html>

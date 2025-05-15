@@ -2,6 +2,12 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <nav class="navbar">
     <div class="navbar-container">
+        <!-- Логотип или название сайта (можно добавить) -->
+        <div class="navbar-brand">
+            <!-- Здесь может быть ваш логотип или название -->
+        </div>
+        
+        <!-- Основные ссылки -->
         <div class="nav-links" id="navLinks">
             <a href="{% url 'home' %}">Главная</a>
             <a href="{% url 'services' %}">Услуги</a>
@@ -30,10 +36,14 @@
                 <a href="{% url 'register' %}">Регистрация</a>
             {% endif %}
         </div>
-        <div class="burger-menu" id="burgerMenu">
-            <span></span>
-            <span></span>
-            <span></span>
+        
+        <!-- Бургер-меню (теперь справа) -->
+        <div class="burger-menu-container">
+            <div class="burger-menu" id="burgerMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </div>
 </nav>
@@ -52,7 +62,7 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.3);
         padding: 12px 0;
         width: 100%;
-        
+
         top: 0;
         z-index: 1000;
     }
@@ -144,6 +154,11 @@
         background: rgba(74, 105, 189, 0.05);
     }
 
+    .burger-menu-container {
+        display: flex;
+        justify-content: flex-end;
+    }
+
     .burger-menu {
         display: none;
         flex-direction: column;
@@ -163,6 +178,10 @@
 
     /* Мобильная версия */
     @media (max-width: 768px) {
+        .navbar-container {
+            justify-content: space-between;
+        }
+        
         .nav-links {
             position: fixed;
             top: 60px;
@@ -233,7 +252,8 @@
         const dropdowns = document.querySelectorAll('.dropdown');
 
         // Бургер-меню
-        burgerMenu.addEventListener('click', function() {
+        burgerMenu.addEventListener('click', function(e) {
+            e.stopPropagation(); // Предотвращаем всплытие события
             this.classList.toggle('active');
             navLinks.classList.toggle('active');
         });
