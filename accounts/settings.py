@@ -4,13 +4,13 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Секретный ключ для вашего приложения
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'ваш_секретный_ключ')  # Рекомендуется хранить в переменной окружения
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'temporary-secret-key-for-testing')
 
 # Режим отладки
-DEBUG = False  # На продакшене всегда False!
+DEBUG = False  # Временно можно True для диагностики, затем вернуть False
 
 # Разрешенные хосты
-ALLOWED_HOSTS = ['doghap23.pythonanywhere.com']
+ALLOWED_HOSTS = ['doghap23.pythonanywhere.com', '*.pythonanywhere.com']
 
 # Установленные приложения
 INSTALLED_APPS = [
@@ -20,7 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',  # Ваше приложение здесь
+    'accounts',
 ]
 
 # Промежуточное ПО
@@ -61,8 +61,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'mersedog23@gmail.com.com')  # Замените на ваш Gmail
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '451235690')  # Замените на App Password
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'mersedog23@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'your-app-password')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Базовый URL для ссылок подтверждения
