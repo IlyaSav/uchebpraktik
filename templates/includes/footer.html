@@ -1,9 +1,9 @@
 <footer class="footer">
     <div class="footer-wave">
         <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="#2e86de"></path>
-            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="#2e86de"></path>
-            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="#2e86de"></path>
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="#5D9C59"></path>
+            <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="#5D9C59"></path>
+            <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="#5D9C59"></path>
         </svg>
     </div>
     
@@ -54,7 +54,7 @@
         
         <div class="footer-bottom">
             <div class="footer-copyright">
-                &copy; 2025 Услуги дезинсекции.
+                &copy; 2025 ЭкоСтандарт. Все права защищены.
             </div>
             <div class="footer-social">
                 <a href="#" class="social-icon"><i class="fab fa-vk"></i></a>
@@ -68,10 +68,12 @@
 
 <style>
 .footer {
-    background-color: #f8f9fa;
-    color: #333;
+    background-color: #F7F9F9;
+    color: #2D3436;
     position: relative;
     margin-top: 80px;
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .footer-wave {
@@ -119,7 +121,7 @@
     font-size: 1.2rem;
     font-weight: 700;
     margin-bottom: 20px;
-    color: #2c3e50;
+    color: #2D3436;
     position: relative;
     padding-bottom: 10px;
 }
@@ -131,7 +133,7 @@
     left: 0;
     width: 40px;
     height: 3px;
-    background-color: #2e86de;
+    background: var(--primary-gradient);
     border-radius: 3px;
 }
 
@@ -139,23 +141,28 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #333;
+    color: #2D3436;
     text-decoration: none;
     margin-bottom: 15px;
     padding: 8px 0;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     font-weight: 500;
 }
 
 .nav-link:hover {
-    color: #2e86de;
+    color: #5D9C59;
     transform: translateX(5px);
 }
 
 .nav-link i {
     width: 20px;
     text-align: center;
-    color: #2e86de;
+    color: #5D9C59;
+    transition: transform 0.3s;
+}
+
+.nav-link:hover i {
+    transform: scale(1.2);
 }
 
 .footer-contacts {
@@ -172,86 +179,32 @@
 
 .contact-item i {
     font-size: 1.2rem;
-    color: #2e86de;
+    color: #5D9C59;
     margin-top: 3px;
+    transition: transform 0.3s;
+}
+
+.contact-item:hover i {
+    transform: scale(1.2);
 }
 
 .contact-item a, .contact-item span {
     display: block;
-    color: #333;
+    color: #2D3436;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
 }
 
 .contact-item a:hover {
-    color: #2e86de;
+    color: #5D9C59;
 }
 
 .contact-item small {
     display: block;
     font-size: 0.8rem;
-    color: #7f8c8d;
+    color: #636e72;
     margin-top: 5px;
-}
-
-.footer-subscribe {
-    flex: 1;
-    min-width: 250px;
-}
-
-.footer-subscribe p {
-    color: #555;
-    margin-bottom: 15px;
-    font-size: 0.95rem;
-}
-
-.subscribe-form {
-    display: flex;
-    margin-bottom: 20px;
-}
-
-.subscribe-form input {
-    flex: 1;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px 0 0 6px;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
-}
-
-.subscribe-form input:focus {
-    border-color: #2e86de;
-}
-
-.subscribe-form button {
-    background-color: #2e86de;
-    color: white;
-    border: none;
-    padding: 0 20px;
-    border-radius: 0 6px 6px 0;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.subscribe-form button:hover {
-    background-color: #1a68c5;
-}
-
-.payment-methods {
-    display: flex;
-    gap: 15px;
-    font-size: 1.8rem;
-    color: #555;
-}
-
-.payment-methods i {
-    transition: color 0.3s;
-}
-
-.payment-methods i:hover {
-    color: #2e86de;
 }
 
 .footer-bottom {
@@ -261,11 +214,11 @@
     flex-wrap: wrap;
     gap: 20px;
     padding-top: 30px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .footer-copyright {
-    color: #7f8c8d;
+    color: #636e72;
     font-size: 0.9rem;
 }
 
@@ -280,16 +233,18 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: #2e86de;
+    background: var(--primary-gradient);
     color: white;
     border-radius: 50%;
     font-size: 1.2rem;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(93, 156, 89, 0.3);
 }
 
 .social-icon:hover {
-    background-color: #1a68c5;
-    transform: translateY(-3px);
+    background: var(--primary-gradient);
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 25px rgba(93, 156, 89, 0.4);
 }
 
 @media (max-width: 992px) {
@@ -317,9 +272,13 @@
         width: 100%;
     }
     
-    .footer-contacts,
-    .footer-subscribe {
+    .footer-contacts {
         min-width: 100%;
+    }
+    
+    .footer-bottom {
+        flex-direction: column-reverse;
+        text-align: center;
     }
 }
 </style>

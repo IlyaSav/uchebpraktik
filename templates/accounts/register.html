@@ -5,311 +5,486 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация | ЭкоСтандарт</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-       :root {
-    --primary: #4361ee;
-    --primary-light: #4895ef;
-    --secondary: #3f37c9;
-    --dark: #1b263b;
-    --light: #f8f9fa;
-    --success: #4cc9f0;
-    --danger: #f72585;
-    --warning: #f8961e;
-    --info: #560bad;
-}
-
-body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
-    color: var(--dark);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.auth-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
-    padding: 2rem;
-}
-
-.auth-card {
-    width: 100%;
-    max-width: 480px;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-    transform: translateY(0);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.auth-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-}
-
-.auth-header {
-    background: var(--primary);
-    color: white;
-    padding: 2rem;
-    text-align: center;
-}
-
-.auth-header h2 {
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    font-size: 1.75rem;
-}
-
-.auth-header p {
-    opacity: 0.9;
-    margin-bottom: 0;
-}
-
-.auth-body {
-    padding: 2rem;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #6c757d;
-    font-weight: 500;
-}
-
-.input-container {
-    position: relative;
-}
-
-.form-control {
-    height: 56px;
-    padding-left: 3rem;
-    padding-right: 3rem;
-    border-radius: 12px;
-    border: 2px solid #e9ecef;
-    transition: all 0.3s;
-    width: 100%;
-    position: relative;
-    z-index: 1;
-}
-
-.form-control:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
-}
-
-.input-icon {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--primary);
-    z-index: 2;
-    font-size: 1.1rem;
-    pointer-events: none;
-}
-
-.btn-primary {
-    background-color: var(--primary);
-    border: none;
-    border-radius: 12px;
-    padding: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-    width: 100%;
-    transition: all 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: var(--secondary);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(63, 55, 201, 0.3);
-}
-
-.auth-footer {
-    text-align: center;
-    padding-top: 1.5rem;
-    margin-top: 1.5rem;
-    border-top: 1px solid #e9ecef;
-    color: #6c757d;
-}
-
-.auth-footer a {
-    color: var(--primary);
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s;
-}
-
-.auth-footer a:hover {
-    color: var(--secondary);
-    text-decoration: underline;
-}
-
-.password-toggle {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #adb5bd;
-    z-index: 2;
-    background: none;
-    border: none;
-    padding: 0;
-}
-
-.password-toggle:hover {
-    color: var(--primary);
-}
-
-.form-text {
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-    padding-left: 0.5rem;
-    color: #6c757d;
-}
-
-.invalid-feedback {
-    color: var(--danger);
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-}
-
-/* Анимации */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.auth-card {
-    animation: fadeIn 0.6s ease-out forwards;
-}
-
-/* Адаптивность */
-@media (max-width: 576px) {
-    .auth-wrapper {
-        padding: 1rem;
-    }
-    
-    .auth-header {
-        padding: 1.5rem;
-    }
-    
-    .auth-body {
-        padding: 1.5rem;
-    }
-}
+        :root {
+            --primary: #5D9C59;
+            --primary-light: #DFF6DD;
+            --primary-dark: #3A7D44;
+            --primary-gradient: linear-gradient(135deg, #5D9C59 0%, #3A7D44 100%);
+            --accent: #FFD166;
+            --accent-gradient: linear-gradient(135deg, #FFD166 0%, #F9A825 100%);
+            --danger: #EF476F;
+            --danger-gradient: linear-gradient(135deg, #EF476F 0%, #D63031 100%);
+            --dark: #2D3436;
+            --light: #F7F9F9;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 15px 50px rgba(0, 0, 0, 0.15);
+            --blur: blur(10px);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #F0F4F8 0%, #E1E8ED 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://клининг-дезинфекция.рф/wp-content/uploads/2024/03/section24-img1.jpg') no-repeat center center;
+            background-size: cover;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        /* Анимации */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Основной контейнер */
+        .auth-container {
+            max-width: 500px;
+            margin: 5rem auto;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            border: 1px solid var(--glass-border);
+            animation: fadeIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        /* Шапка */
+        .auth-header {
+            background: var(--primary-gradient);
+            background-size: 200% 200%;
+            animation: gradientShift 10s ease infinite;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .auth-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
+            pointer-events: none;
+        }
+        
+        .auth-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+            position: relative;
+            display: inline-block;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .auth-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+            box-shadow: 0 2px 10px rgba(255, 209, 102, 0.5);
+        }
+        
+        .auth-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 400px;
+            margin: 0 auto;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Тело формы */
+        .auth-body {
+            padding: 2.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.75rem;
+            position: relative;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .input-container {
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .form-control {
+            height: 56px;
+            padding-left: 3.5rem;
+            padding-right: 3rem;
+            border-radius: 14px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            background-color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(93, 156, 89, 0.15);
+            background-color: white;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            z-index: 2;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus + .input-icon {
+            color: var(--primary-dark);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #adb5bd;
+            z-index: 2;
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        .password-toggle:hover {
+            color: var(--primary);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .form-text {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            padding-left: 0.5rem;
+            color: #6c757d;
+        }
+        
+        .invalid-feedback {
+            color: var(--danger);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+            position: absolute;
+            bottom: -1.5rem;
+            left: 0;
+        }
+        
+        /* Кнопка */
+        .auth-btn {
+            background: var(--primary-gradient);
+            background-size: 200% 200%;
+            border: none;
+            border-radius: 14px;
+            padding: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(93, 156, 89, 0.3);
+            color: white;
+            margin-top: 1rem;
+        }
+        
+        .auth-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(93, 156, 89, 0.4);
+            animation: gradientShift 3s ease infinite;
+        }
+        
+        .auth-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.2));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .auth-btn:hover::after {
+            opacity: 1;
+        }
+        
+        /* Футер */
+        .auth-footer {
+            text-align: center;
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            color: #6c757d;
+        }
+        
+        .auth-footer a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .auth-footer a:hover {
+            color: var(--primary-dark);
+        }
+        
+        .auth-footer a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gradient);
+            transition: width 0.3s;
+        }
+        
+        .auth-footer a:hover::after {
+            width: 100%;
+        }
+        
+        /* Декоративные элементы */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(40px);
+        }
+        
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: 20%;
+            left: 10%;
+            animation: float 15s ease-in-out infinite;
+        }
+        
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent);
+            bottom: 10%;
+            right: 5%;
+            animation: float 18s ease-in-out infinite reverse;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .auth-container {
+                margin: 3rem auto;
+                max-width: 90%;
+            }
+            
+            .auth-header {
+                padding: 2.5rem 1.5rem;
+            }
+            
+            .auth-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .auth-body {
+                padding: 1.75rem;
+            }
+            
+            .auth-title {
+                font-size: 1.8rem;
+            }
+            
+            .auth-subtitle {
+                font-size: 1rem;
+            }
+            
+            .form-control {
+                padding-left: 3rem;
+            }
+            
+            .input-icon {
+                left: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
+<!-- Декоративные фоновые элементы -->
+<div class="floating-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+</div>
+
 {% include 'includes/navbar.html' %}
 
-<div class="auth-wrapper">
-    <div class="auth-card">
-        <div class="auth-header">
-            <h2>Присоединяйтесь</h2>
-            <p>Создайте аккаунт для доступа к сервису</p>
-        </div>
-        
-        <div class="auth-body">
-            <form method="POST" class="auth-form">
-                {% csrf_token %}
-                
-                <!-- Имя пользователя -->
-                <div class="form-group">
-                    <label for="id_username" class="form-label">Имя пользователя</label>
-                    <div class="input-container">
-                        
-                        <input type="text" name="username" id="id_username" class="form-control" 
-                               placeholder="Введите имя пользователя" required>
-                    </div>
-                    {% if form.username.errors %}
-                        <div class="invalid-feedback">{{ form.username.errors }}</div>
-                    {% endif %}
+<div class="auth-container">
+    <div class="auth-header">
+        <h1 class="auth-title">Присоединяйтесь</h1>
+        <p class="auth-subtitle">Создайте аккаунт для доступа к сервису</p>
+    </div>
+    
+    <div class="auth-body">
+        <form method="POST" class="auth-form">
+            {% csrf_token %}
+            
+            <!-- Имя пользователя -->
+            <div class="form-group">
+                <label for="id_username" class="form-label">Имя пользователя</label>
+                <div class="input-container">
+                    
+                    <input type="text" name="username" id="id_username" class="form-control" 
+                           placeholder="Введите имя пользователя" required>
                 </div>
-                
-                <!-- Email -->
-                <div class="form-group">
-                    <label for="id_email" class="form-label">Email</label>
-                    <div class="position-relative">
-                        
-                        <input type="email" name="email" id="id_email" class="form-control" 
-                               placeholder="Введите ваш email" required>
-                    </div>
-                    {% if form.email.errors %}
-                        <div class="invalid-feedback">{{ form.email.errors }}</div>
-                    {% endif %}
+                {% if form.username.errors %}
+                    <div class="invalid-feedback">{{ form.username.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- Email -->
+            <div class="form-group">
+                <label for="id_email" class="form-label">Email</label>
+                <div class="input-container">
+                    
+                    <input type="email" name="email" id="id_email" class="form-control" 
+                           placeholder="Введите ваш email" required>
                 </div>
-                
-                <!-- Пароль -->
-                <div class="form-group">
-                    <label for="id_password1" class="form-label">Пароль</label>
-                    <div class="position-relative">
-                        
-                        <input type="password" name="password1" id="id_password1" class="form-control" 
-                               placeholder="Создайте пароль" required>
-                        <i class="far fa-eye password-toggle" id="togglePassword1"></i>
-                    </div>
-                    <div class="form-text">
-                        Минимум 8 символов, включая цифры и буквы
-                    </div>
-                    {% if form.password1.errors %}
-                        <div class="invalid-feedback">{{ form.password1.errors }}</div>
-                    {% endif %}
-                </div>
-                
-                <!-- Подтверждение пароля -->
-                <div class="form-group">
-                    <label for="id_password2" class="form-label">Подтвердите пароль</label>
-                    <div class="position-relative">
-                        
-                        <input type="password" name="password2" id="id_password2" class="form-control" 
-                               placeholder="Повторите пароль" required>
-                        <i class="far fa-eye password-toggle" id="togglePassword2"></i>
-                    </div>
-                    {% if form.password2.errors %}
-                        <div class="invalid-feedback">{{ form.password2.errors }}</div>
-                    {% endif %}
-                </div>
-                
-                <div class="d-grid gap-2 mt-4">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-user-plus me-2"></i> Зарегистрироваться
+                {% if form.email.errors %}
+                    <div class="invalid-feedback">{{ form.email.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <!-- Пароль -->
+            <div class="form-group">
+                <label for="id_password1" class="form-label">Пароль</label>
+                <div class="input-container">
+                    
+                    <input type="password" name="password1" id="id_password1" class="form-control" 
+                           placeholder="Создайте пароль" required>
+                    <button type="button" class="password-toggle" id="togglePassword1">
+                        <i class="far fa-eye"></i>
                     </button>
                 </div>
-            </form>
-            
-            <div class="auth-footer">
-                <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти в систему</a></p>
+                <div class="form-text">
+                    Минимум 8 символов, включая цифры и буквы
+                </div>
+                {% if form.password1.errors %}
+                    <div class="invalid-feedback">{{ form.password1.errors }}</div>
+                {% endif %}
             </div>
+            
+            <!-- Подтверждение пароля -->
+            <div class="form-group">
+                <label for="id_password2" class="form-label">Подтвердите пароль</label>
+                <div class="input-container">
+                    
+                    <input type="password" name="password2" id="id_password2" class="form-control" 
+                           placeholder="Повторите пароль" required>
+                    <button type="button" class="password-toggle" id="togglePassword2">
+                        <i class="far fa-eye"></i>
+                    </button>
+                </div>
+                {% if form.password2.errors %}
+                    <div class="invalid-feedback">{{ form.password2.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="auth-btn">
+                <i class="fas fa-user-plus me-2"></i> Зарегистрироваться
+            </button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти в систему</a></p>
         </div>
     </div>
 </div>
 
-
-
-<!-- Bootstrap 5 JS Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Toggle password visibility
     document.getElementById('togglePassword1').addEventListener('click', function() {
         const passwordInput = document.getElementById('id_password1');
-        const icon = this;
+        const icon = this.querySelector('i');
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
             icon.classList.remove('fa-eye');
@@ -323,7 +498,7 @@ body {
     
     document.getElementById('togglePassword2').addEventListener('click', function() {
         const passwordInput = document.getElementById('id_password2');
-        const icon = this;
+        const icon = this.querySelector('i');
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
             icon.classList.remove('fa-eye');
@@ -336,5 +511,6 @@ body {
     });
 </script>
 
+{% include 'includes/footer.html' %}
 </body>
 </html>

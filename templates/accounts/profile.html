@@ -5,24 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Профиль | ЭкоСтандарт</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         :root {
             --primary: #5D9C59;
             --primary-light: #DFF6DD;
             --primary-dark: #3A7D44;
+            --primary-gradient: linear-gradient(135deg, #5D9C59 0%, #3A7D44 100%);
             --accent: #FFD166;
+            --accent-gradient: linear-gradient(135deg, #FFD166 0%, #F9A825 100%);
             --danger: #EF476F;
+            --danger-gradient: linear-gradient(135deg, #EF476F 0%, #D63031 100%);
             --dark: #2D3436;
             --light: #F7F9F9;
-            --card-bg: #FFFFFF;
             --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.2);
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
             --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 15px 50px rgba(0, 0, 0, 0.15);
+            --blur: blur(12px);
         }
-        
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #F0F4F8 0%, #E1E8ED 100%);
@@ -30,27 +36,70 @@
             min-height: 100vh;
             line-height: 1.6;
             letter-spacing: -0.01em;
+            overflow-x: hidden;
         }
-        
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Profile Container */
         .profile-container {
             max-width: 1200px;
             margin: 3rem auto;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: var(--shadow-xl);
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            border: 1px solid var(--glass-border);
+            position: relative;
+            z-index: 1;
         }
-        
+
+        .profile-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 70% 30%, rgba(93, 156, 89, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        /* Profile Header */
         .profile-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: var(--primary-gradient);
+            background-size: 200% 200%;
+            animation: gradientShift 10s ease infinite;
             color: white;
-            padding: 3rem 2rem;
+            padding: 4rem 2rem;
             text-align: center;
             position: relative;
             overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
+
         .profile-header::after {
             content: '';
             position: absolute;
@@ -58,19 +107,42 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent 60%, rgba(255, 255, 255, 0.15));
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
             pointer-events: none;
         }
-        
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 3px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 3rem;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: pulse 4s ease infinite;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
         .profile-title {
-            font-size: 2.2rem;
-            font-weight: 700;
+            font-size: 2.5rem;
+            font-weight: 800;
             margin-bottom: 0.5rem;
             letter-spacing: -0.03em;
             position: relative;
             display: inline-block;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         .profile-title::after {
             content: '';
             position: absolute;
@@ -81,46 +153,58 @@
             height: 4px;
             background: var(--accent);
             border-radius: 2px;
+            box-shadow: 0 2px 10px rgba(255, 209, 102, 0.5);
         }
-        
+
         .profile-subtitle {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             opacity: 0.9;
             font-weight: 400;
             color: rgba(255, 255, 255, 0.9);
             max-width: 600px;
             margin: 0 auto;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-        
+
+        /* Profile Content */
         .profile-content {
             padding: 3rem;
+            position: relative;
         }
-        
-        /* Карточки информации */
+
+        .profile-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgcGF0dGVyblRyYW5zZm9ybT0icm90YXRlKDQ1KSI+PHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDIpIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3BhdHRlcm4pIi8+PC9zdmc+');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Info Cards */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-bottom: 3rem;
         }
-        
+
         .info-card {
             background: var(--glass-bg);
-            border-radius: 16px;
+            backdrop-filter: var(--blur);
+            border-radius: 20px;
             padding: 2rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
+            z-index: 1;
         }
-        
-        .info-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
-            border-color: rgba(93, 156, 89, 0.3);
-        }
-        
+
         .info-card::before {
             content: '';
             position: absolute;
@@ -128,113 +212,184 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(93, 156, 89, 0.03) 0%, transparent 100%);
-            pointer-events: none;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        
+
+        .info-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(93, 156, 89, 0.5);
+        }
+
+        .info-card:hover::before {
+            opacity: 1;
+        }
+
+        .info-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .info-card:hover::after {
+            transform: scaleX(1);
+        }
+
         .info-icon {
-            width: 48px;
-            height: 48px;
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(93, 156, 89, 0.1);
+            background: linear-gradient(135deg, rgba(93, 156, 89, 0.1) 0%, rgba(255, 255, 255, 0.3) 100%);
             color: var(--primary);
-            border-radius: 12px;
+            border-radius: 16px;
             margin-bottom: 1.5rem;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
+            font-size: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
-        
+
         .info-card:hover .info-icon {
-            background: var(--primary);
+            background: var(--primary-gradient);
             color: white;
-            transform: rotate(5deg) scale(1.1);
+            transform: rotate(10deg) scale(1.1);
+            box-shadow: 0 10px 25px rgba(93, 156, 89, 0.3);
         }
-        
+
         .info-label {
             font-size: 0.9rem;
             color: #6B7280;
             font-weight: 500;
             margin-bottom: 0.5rem;
             letter-spacing: 0.3px;
+            transition: all 0.3s ease;
         }
-        
+
+        .info-card:hover .info-label {
+            color: var(--primary-dark);
+        }
+
         .info-value {
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.4rem;
+            font-weight: 700;
             color: var(--dark);
             margin: 0;
             line-height: 1.3;
+            transition: all 0.3s ease;
         }
-        
-        /* Таблица заявок */
+
+        .info-card:hover .info-value {
+            color: var(--primary-dark);
+        }
+
+        /* Requests Table */
         .section-title {
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1.8rem;
+            font-weight: 700;
             color: var(--dark);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             position: relative;
             display: inline-block;
+            padding-left: 1.5rem;
         }
-        
-        .section-title::after {
+
+        .section-title::before {
             content: '';
             position: absolute;
-            bottom: -8px;
             left: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 40px;
+            background: var(--primary-gradient);
+            border-radius: 4px;
+            box-shadow: 0 3px 10px rgba(93, 156, 89, 0.3);
         }
-        
+
         .requests-container {
             background: var(--glass-bg);
-            border-radius: 16px;
+            backdrop-filter: var(--blur);
+            border-radius: 20px;
             padding: 0;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             overflow: hidden;
+            transition: all 0.3s ease;
         }
-        
+
+        .requests-container:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-3px);
+        }
+
         .requests-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
         }
-        
+
         .requests-table thead {
-            background: linear-gradient(135deg, rgba(93, 156, 89, 0.1) 0%, rgba(93, 156, 89, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(93, 156, 89, 0.15) 0%, rgba(93, 156, 89, 0.1) 100%);
         }
-        
+
         .requests-table th {
             color: var(--primary-dark);
             font-weight: 600;
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            padding: 1rem 1.5rem;
+            padding: 1.2rem 1.5rem;
             text-align: left;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
         }
-        
+
+        .requests-table th::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .requests-table th:hover::after {
+            transform: scaleX(1);
+        }
+
         .requests-table td {
-            padding: 1.25rem 1.5rem;
+            padding: 1.5rem;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             vertical-align: middle;
             color: var(--dark);
+            transition: all 0.2s ease;
         }
-        
+
         .requests-table tr:last-child td {
             border-bottom: none;
         }
-        
+
         .requests-table tr:hover td {
-            background: rgba(93, 156, 89, 0.03);
+            background: rgba(93, 156, 89, 0.05);
+            transform: translateX(5px);
         }
-        
-        /* Статусы */
+
+        /* Status Badges */
         .status-badge {
             font-size: 0.8rem;
             font-weight: 600;
@@ -244,370 +399,658 @@
             align-items: center;
             gap: 0.5rem;
             line-height: 1;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
         }
-        
+
         .status-new {
-            background: rgba(59, 130, 246, 0.1);
+            background: rgba(59, 130, 246, 0.15);
             color: #3B82F6;
+            border: 1px solid rgba(59, 130, 246, 0.2);
         }
-        
+
         .status-in-progress {
-            background: rgba(234, 179, 8, 0.1);
+            background: rgba(234, 179, 8, 0.15);
             color: #EAB308;
+            border: 1px solid rgba(234, 179, 8, 0.2);
         }
-        
+
         .status-completed {
-            background: rgba(16, 185, 129, 0.1);
+            background: rgba(16, 185, 129, 0.15);
             color: #10B981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
         }
-        
+
         .status-cancelled {
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(239, 68, 68, 0.15);
             color: #EF4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
         }
-        
-        /* Кнопки */
+
+        /* Buttons */
         .action-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             flex-wrap: wrap;
-            margin-top: 2rem;
+            margin-top: 3rem;
         }
-        
+
         .btn {
-            padding: 0.9rem 1.8rem;
-            border-radius: 12px;
+            padding: 1rem 2.2rem;
+            border-radius: 14px;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 0.7rem;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
+            gap: 0.8rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1rem;
             border: none;
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-        
-        .btn::after {
+
+        .btn::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.2));
-            pointer-events: none;
+            background: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.3));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        
+
+        .btn:hover::before {
+            opacity: 1;
+        }
+
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: var(--primary-gradient);
+            background-size: 200% 200%;
             color: white;
-            box-shadow: 0 4px 15px rgba(93, 156, 89, 0.3);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(93, 156, 89, 0.4);
         }
-        
+
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(93, 156, 89, 0.5);
+            animation: gradientShift 3s ease infinite;
+        }
+
         .btn-outline {
             background: transparent;
             border: 1px solid rgba(0, 0, 0, 0.1);
             color: var(--dark);
+            backdrop-filter: var(--blur);
         }
-        
+
         .btn-outline:hover {
             border-color: var(--primary);
             color: var(--primary);
             background: rgba(93, 156, 89, 0.05);
+            transform: translateY(-5px);
         }
-        
+
         .btn-danger {
-            background: linear-gradient(135deg, var(--danger) 0%, #D63031 100%);
+            background: var(--danger-gradient);
+            background-size: 200% 200%;
             color: white;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-        }
-        
-        .btn-danger:hover {
-            transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
         }
-        
-        /* Пустое состояние */
+
+        .btn-danger:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(239, 68, 68, 0.5);
+            animation: gradientShift 3s ease infinite;
+        }
+
+        /* Empty State */
         .empty-state {
-            padding: 3rem 2rem;
+            padding: 4rem 2rem;
             text-align: center;
             background: var(--glass-bg);
-            border-radius: 16px;
-            border: 1px dashed rgba(93, 156, 89, 0.3);
-            margin: 2rem 0;
+            backdrop-filter: var(--blur);
+            border-radius: 20px;
+            border: 2px dashed rgba(93, 156, 89, 0.3);
+            margin: 3rem 0;
+            transition: all 0.3s ease;
         }
-        
+
+        .empty-state:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
         .empty-icon {
-            font-size: 3rem;
+            font-size: 4rem;
             color: var(--primary);
             margin-bottom: 1.5rem;
             opacity: 0.7;
+            animation: float 6s ease-in-out infinite;
         }
-        
+
         .empty-text {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: #6B7280;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Edit Profile Block */
+        .edit-profile-block {
+            display: none;
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--glass-border);
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .edit-profile-block.show {
+            display: block;
+        }
+
+        .edit-profile-block h5 {
+            color: var(--dark);
+            font-weight: 600;
             margin-bottom: 1.5rem;
         }
-        
-        /* Анимации */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .edit-profile-block .form-control {
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
         }
-        
+
+        .edit-profile-block .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(93, 156, 89, 0.2);
+        }
+
+        .edit-profile-block label {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .edit-profile-block .alert {
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .edit-profile-block .alert-success {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .edit-profile-block .alert-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: #EF4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .edit-profile-block .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Floating Shapes */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(40px);
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: 20%;
+            left: 10%;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent);
+            bottom: 10%;
+            right: 5%;
+            animation: float 18s ease-in-out infinite reverse;
+        }
+
+        .shape-3 {
+            width: 200px;
+            height: 200px;
+            background: var(--danger);
+            top: 60%;
+            left: 30%;
+            animation: float 12s ease-in-out infinite 2s;
+        }
+
+        /* Animations */
         .info-card {
-            animation: fadeIn 0.6s ease forwards;
+            animation: fadeIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             opacity: 0;
         }
-        
+
         .info-card:nth-child(1) { animation-delay: 0.1s; }
         .info-card:nth-child(2) { animation-delay: 0.2s; }
         .info-card:nth-child(3) { animation-delay: 0.3s; }
         .info-card:nth-child(4) { animation-delay: 0.4s; }
-        
+
         .requests-table tr {
             animation: fadeIn 0.5s ease forwards;
         }
-        
+
         .requests-table tr:nth-child(1) { animation-delay: 0.1s; }
         .requests-table tr:nth-child(2) { animation-delay: 0.2s; }
         .requests-table tr:nth-child(3) { animation-delay: 0.3s; }
         .requests-table tr:nth-child(4) { animation-delay: 0.4s; }
-        
-        /* Адаптивность */
-        @media (max-width: 992px) {
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
             .profile-container {
-                margin: 1.5rem;
-                border-radius: 20px;
-            }
-            
-            .profile-header {
-                padding: 2.5rem 1.5rem;
-            }
-            
-            .profile-content {
-                padding: 2rem;
+                margin: 2rem;
             }
         }
-        
-        @media (max-width: 768px) {
-            .profile-title {
-                font-size: 1.8rem;
+
+        @media (max-width: 992px) {
+            .profile-header {
+                padding: 3rem 1.5rem;
             }
-            
+
+            .profile-title {
+                font-size: 2.2rem;
+            }
+
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .profile-title {
+                font-size: 2rem;
+            }
+
+            .profile-subtitle {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
             .info-grid {
                 grid-template-columns: 1fr;
             }
-            
+
+            .profile-header {
+                padding: 2.5rem 1rem;
+            }
+
+            .profile-content {
+                padding: 1.5rem;
+            }
+
+            .profile-title {
+                font-size: 1.8rem;
+            }
+
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+
             .action-buttons {
                 flex-direction: column;
+                gap: 1rem;
             }
-            
+
             .btn {
                 width: 100%;
                 justify-content: center;
             }
-        }
-        
-        @media (max-width: 576px) {
-            .profile-header {
-                padding: 2rem 1rem;
-            }
-            
-            .profile-content {
-                padding: 1.5rem;
-            }
-            
-            .info-card {
-                padding: 1.5rem;
-            }
-            
-            .requests-table th, 
+
+            .requests-table th,
             .requests-table td {
                 padding: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .edit-profile-block .btn-group {
+                flex-direction: column;
+                gap: 0.5rem;
             }
         }
     </style>
 </head>
 <body>
-{% include 'includes/navbar.html' %}
-
-<div class="profile-container">
-    <div class="profile-header">
-        <h1 class="profile-title">Ваш профиль</h1>
-        <p class="profile-subtitle">Управление учетной записью и история заявок</p>
+    <!-- Floating Shapes -->
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
     </div>
-    
-    <div class="profile-content">
-        <!-- Основная информация -->
-        <div class="info-grid">
-            <div class="info-card">
-                <div class="info-icon">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-                <div class="info-label">Имя пользователя</div>
-                <div class="info-value">{{ request.user.username }}</div>
-                {% if request.user.is_staff %}
-                <div class="mt-3">
-                    <span class="status-badge status-completed">
-                        <i class="fas fa-shield-alt"></i> Администратор
-                    </span>
-                </div>
-                {% endif %}
+
+    {% include 'includes/navbar.html' %}
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user-circle"></i>
             </div>
-            
-            <div class="info-card">
-                <div class="info-icon">
-                    <i class="fas fa-envelope-open-text"></i>
-                </div>
-                <div class="info-label">Электронная почта</div>
-                <div class="info-value">{{ request.user.email }}</div>
-            </div>
-            
-            <div class="info-card">
-                <div class="info-icon">
-                    <i class="fas fa-calendar-check"></i>
-                </div>
-                <div class="info-label">Дата регистрации</div>
-                <div class="info-value">{{ request.user.date_joined|date:"d M Y" }}</div>
-            </div>
-            
-            <div class="info-card">
-                <div class="info-icon">
-                    <i class="fas fa-user-shield"></i>
-                </div>
-                <div class="info-label">Статус аккаунта</div>
-                <div class="info-value">
-                    {% if request.user.is_active %}
-                        <span class="status-badge status-completed">
-                            <i class="fas fa-check-circle"></i> Активен
-                        </span>
-                    {% else %}
-                        <span class="status-badge status-cancelled">
-                            <i class="fas fa-times-circle"></i> Неактивен
-                        </span>
+            <h1 class="profile-title">{{ request.user.username }}</h1>
+            <p class="profile-subtitle">Добро пожаловать в ваш профиль</p>
+        </div>
+
+        <div class="profile-content">
+            <!-- Basic Info -->
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <div class="info-label">Имя пользователя</div>
+                    <div class="info-value">{{ request.user.username }}</div>
+                    {% if request.user.is_staff %}
+                        <div class="mt-3">
+                            <span class="status-badge status-completed">
+                                <i class="fas fa-shield-alt"></i> Администратор
+                            </span>
+                        </div>
                     {% endif %}
                 </div>
-            </div>
-        </div>
-        
-        <!-- История заявок -->
-        <h4 class="section-title">История заявок</h4>
-        
-        {% if user_requests %}
-        <div class="requests-container">
-            <table class="requests-table">
-                <thead>
-                    <tr>
-                        <th>№</th>
-                        <th>Дата</th>
-                        <th>Услуга</th>
-                        <th>Статус</th>
-                        <th>Стоимость</th>
-                        <th>Действия</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for req in user_requests %}
-                    <tr>
-                        <td>{{ req.id }}</td>
-                        <td>{{ req.created_at|date:"d.m.Y H:i" }}</td>
-                        <td>
-                            {% if req.service %}
-                                {{ req.service.name }}
-                            {% else %}
-                                {{ req.custom_service }}
-                            {% endif %}
-                        </td>
-                        <td>
-                            <span class="status-badge 
-                                {% if req.status == 'new' %}status-new
-                                {% elif req.status == 'in_progress' %}status-in-progress
-                                {% elif req.status == 'completed' %}status-completed
-                                {% else %}status-cancelled{% endif %}">
-                                <i class="fas 
-                                    {% if req.status == 'new' %}fa-clock
-                                    {% elif req.status == 'in_progress' %}fa-spinner fa-pulse
-                                    {% elif req.status == 'completed' %}fa-check-circle
-                                    {% else %}fa-times-circle{% endif %}"></i>
-                                {{ req.get_status_display }}
+
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="info-label">Электронная почта</div>
+                    <div class="info-value">{{ request.user.email }}</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="info-label">Дата регистрации</div>
+                    <div class="info-value">{{ request.user.date_joined|date:"d M Y" }}</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="info-label">Статус аккаунта</div>
+                    <div class="info-value">
+                        {% if request.user.is_active %}
+                            <span class="status-badge status-completed">
+                                <i class="fas fa-check-circle"></i> Активен
                             </span>
-                        </td>
-                        <td>
-                            {% if req.price %}
-                                <span class="fw-bold">{{ req.price }} ₽</span>
-                            {% else %}
-                                <span class="text-muted">—</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if req.service %}
-                                <a href="{% url 'service_detail' req.service.id %}" class="btn btn-sm btn-outline">
-                                    <i class="fas fa-eye"></i> Подробнее
-                                </a>
-                            {% else %}
-                                <span class="text-muted">—</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <div class="empty-state">
-            <div class="empty-icon">
-                <i class="fas fa-clipboard-list"></i>
+                        {% else %}
+                            <span class="status-badge status-cancelled">
+                                <i class="fas fa-times-circle"></i> Неактивен
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-            <h5 class="fw-bold mb-3">Заявок пока нет</h5>
-            <p class="empty-text">Вы еще не создавали заявок в нашем сервисе</p>
-            <a href="{% url 'order' %}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Создать первую заявку
-            </a>
-        </div>
-        {% endif %}
-        
-        <!-- Действия -->
-        <div class="action-buttons">
-            <a href="{% url 'order' %}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Новая заявка
-            </a>
-            <form method="POST" action="{% url 'logout' %}" class="d-inline">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">
-                    <i class="fas fa-sign-out-alt"></i> Выйти
+
+            <!-- Request History -->
+            <h4 class="section-title">История заявок</h4>
+
+            {% if user_requests %}
+                <div class="requests-container">
+                    <table class="requests-table">
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Дата</th>
+                                <th>Услуга</th>
+                                <th>Статус</th>
+                                <th>Стоимость</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for req in user_requests %}
+                                <tr>
+                                    <td>{{ req.id }}</td>
+                                    <td>{{ req.created_at|date:"d.m.Y H:i" }}</td>
+                                    <td>
+                                        {% if req.service %}
+                                            {{ req.service.name }}
+                                        {% else %}
+                                            {{ req.custom_service }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="status-badge 
+                                            {% if req.status == 'new' %}status-new
+                                            {% elif req.status == 'in_progress' %}status-in-progress
+                                            {% elif req.status == 'completed' %}status-completed
+                                            {% else %}status-cancelled{% endif %}">
+                                            <i class="fas 
+                                                {% if req.status == 'new' %}fa-clock
+                                                {% elif req.status == 'in_progress' %}fa-spinner fa-pulse
+                                                {% elif req.status == 'completed' %}fa-check-circle
+                                                {% else %}fa-times-circle{% endif %}"></i>
+                                            {{ req.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if req.price %}
+                                            <span class="fw-bold">{{ req.price }} ₽</span>
+                                        {% else %}
+                                            <span class="text-muted">—</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if req.service %}
+                                            <a href="{% url 'service_detail' req.service.id %}" class="btn btn-sm btn-outline">
+                                                <i class="fas fa-eye"></i> Подробнее
+                                            </a>
+                                        {% else %}
+                                            <span class="text-muted">—</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h5 class="fw-bold mb-3">Заявок пока нет</h5>
+                    <p class="empty-text">Вы еще не создавали заявок в нашем сервисе. Давайте начнем ваш экологический путь прямо сейчас!</p>
+                    <a href="{% url 'order' %}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Создать первую заявку
+                    </a>
+                </div>
+            {% endif %}
+
+            <!-- Actions -->
+            <div class="action-buttons">
+                <a href="{% url 'order' %}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i> Новая заявка
+                </a>
+                <button type="button" class="btn btn-outline" id="toggleEditProfile">
+                    <i class="fas fa-edit"></i> Редактировать профиль
                 </button>
-            </form>
+                <form method="POST" action="{% url 'logout' %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-sign-out-alt"></i> Выйти
+                    </button>
+                </form>
+            </div>
+
+            <!-- Edit Profile Block -->
+            <div class="edit-profile-block" id="editProfileBlock">
+                <h5>Редактировать профиль</h5>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <form method="POST" action="{% url 'edit_profile' %}">
+                    {% csrf_token %}
+                    {{ profile_form.as_p }}
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Сохранить
+                        </button>
+                        <button type="button" class="btn btn-outline" id="cancelEditProfile">
+                            Отмена
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // Плавное появление элементов
-    document.addEventListener('DOMContentLoaded', () => {
-        const cards = document.querySelectorAll('.info-card');
-        const rows = document.querySelectorAll('.requests-table tr');
-        
-        cards.forEach((card, i) => {
-            card.style.animationDelay = `${i * 0.1}s`;
+    {% include 'includes/footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-7sz1nR1Y69zfpR+OLp0fT2tV5OHRwhG7p5SlgR9M8N6+fn9+umW1HzXBFZFuBVaSUZohQRPwQMB0GXbtrp6ta1Q==" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // Animate Avatar
+                gsap.from('.profile-avatar', {
+                    duration: 1.5,
+                    scale: 0.5,
+                    opacity: 0,
+                    ease: "elastic.out(1, 0.5)",
+                    delay: 0.3
+                });
+
+                // Animate Title
+                gsap.from('.profile-title', {
+                    duration: 1,
+                    y: 30,
+                    opacity: 0,
+                    ease: "power3.out",
+                    delay: 0.5
+                });
+
+                // Animate Subtitle
+                gsap.from('.profile-subtitle', {
+                    duration: 1,
+                    y: 20,
+                    opacity: 0,
+                    ease: "power3.out",
+                    delay: 0.7
+                });
+
+                // Animate Info Cards
+                const cards = document.querySelectorAll('.info-card');
+                cards.forEach((card, i) => {
+                    gsap.from(card, {
+                        duration: 0.8,
+                        y: 30,
+                        opacity: 0,
+                        ease: "back.out(1.7)",
+                        delay: 0.9 + (i * 0.1)
+                    });
+                });
+
+                // Animate Table Rows
+                const rows = document.querySelectorAll('.requests-table tr');
+                rows.forEach((row, i) => {
+                    gsap.from(row, {
+                        duration: 0.6,
+                        x: -20,
+                        opacity: 0,
+                        ease: "power2.out",
+                        delay: 1.3 + (i * 0.05)
+                    });
+                });
+
+                // Button Hover Effects
+                const buttons = document.querySelectorAll('.btn');
+                buttons.forEach(btn => {
+                    btn.addEventListener('mouseenter', () => {
+                        gsap.to(btn, {
+                            duration: 0.3,
+                            scale: 1.05,
+                            ease: "power2.out"
+                        });
+                    });
+
+                    btn.addEventListener('mouseleave', () => {
+                        gsap.to(btn, {
+                            duration: 0.3,
+                            scale: 1,
+                            ease: "power2.out"
+                        });
+                    });
+                });
+            } catch (error) {
+                console.error('GSAP Animation Error:', error);
+            }
+
+            // Toggle Edit Profile Block
+            const toggleButton = document.getElementById('toggleEditProfile');
+            const cancelButton = document.getElementById('cancelEditProfile');
+            const editBlock = document.getElementById('editProfileBlock');
+
+            toggleButton.addEventListener('click', () => {
+                editBlock.classList.toggle('show');
+            });
+
+            cancelButton.addEventListener('click', () => {
+                editBlock.classList.remove('show');
+            });
         });
-        
-        rows.forEach((row, i) => {
-            row.style.animationDelay = `${i * 0.1 + 0.4}s`;
-        });
-    });
-</script>
-
-{% include 'includes/footer.html' %}
-
+    </script>
 </body>
 </html>

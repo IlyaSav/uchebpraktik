@@ -259,6 +259,55 @@
             font-size: 0.85rem;
         }
         
+        /* Newsletter Form Styles */
+        .newsletter-form-container, .newsletter-success {
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .newsletter-form-container .card, .newsletter-success .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease-in-out;
+        }
+        
+        .newsletter-form-container .card:hover, .newsletter-success .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        
+        .newsletter-form-container .input-group {
+            display: flex;
+            justify-content: center;
+        }
+        
+        .newsletter-form-container .form-control {
+            border: 2px solid var(--primary-color);
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+            font-size: 1rem;
+            padding: 10px;
+        }
+        
+        .newsletter-form-container .btn-primary {
+            background-color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-form-container .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            box-shadow: 0 4px 12px rgba(46, 134, 222, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .d-none {
+            display: none;
+        }
+        
         @media (max-width: 992px) {
             .main-container {
                 flex-direction: column;
@@ -347,13 +396,33 @@
     </div>
 </div>
 
-
-
-
 <!-- News Section -->
 <div class="news-container">
     <h2 class="text-center">Наши последние новости</h2>
     
+    <!-- Newsletter Subscription Form -->
+    <div class="newsletter-form-container mb-4" id="newsletter-form-container">
+        <div class="card p-4" style="background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);">
+            <h5 class="text-center mb-3" style="color: var(--dark-color);">Подпишитесь на наши новости</h5>
+            <form id="newsletter-form" action="{% url 'newsletter_subscribe' %}" method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="email" name="email" class="form-control" placeholder="Введите ваш email" required>
+                    <button type="submit" class="btn btn-primary" style="border-radius: 0 8px 8px 0;">
+                        <i class="fas fa-envelope me-2"></i>Подписаться
+                    </button>
+                </div>
+            </form>
+            <p class="text-center mt-3 mb-0" style="color: #555; font-size: 0.9rem;">
+                Получайте актуальные новости и специальные предложения!
+            </p>
+        </div>
+    </div>
+    <div class="newsletter-success d-none card p-4 text-center" id="newsletter-success" style="background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);">
+        <h5 class="mb-3" style="color: var(--dark-color);">Спасибо за подписку!</h5>
+        <p style="color: #555;">Теперь вы будете получать наши последние новости и специальные предложения.</p>
+    </div>
+
     <div class="row">
         <div class="col-md-6 mb-4">
             <div class="card h-100">
@@ -493,8 +562,50 @@
             });
         });
     });
+
+    // Newsletter Form Submission
+    document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const form = this;
+        const formData = new FormData(form);
+        
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const formContainer = document.getElementById('newsletter-form-container');
+            const successContainer = document.getElementById('newsletter-success');
+            
+            if (data.status === 'success') {
+                formContainer.style.opacity = '0';
+                formContainer.addEventListener('transitionend', function handler() {
+                    formContainer.classList.add('d-none');
+                    successContainer.classList.remove('d-none');
+                    successContainer.style.opacity = '0';
+                    // Force reflow to ensure opacity transition triggers
+                    void successContainer.offsetWidth;
+                    setTimeout(() => {
+                        successContainer.style.opacity = '1';
+                    }, 10);
+                    formContainer.removeEventListener('transitionend', handler);
+                });
+            } else {
+                // Display error message
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Произошла ошибка. Пожалуйста, попробуйте снова.');
+        });
+    });
 </script>
 {% include 'includes/footer.html' %}
-
 </body>
 </html>

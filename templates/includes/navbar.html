@@ -1,10 +1,14 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <nav class="navbar">
     <div class="navbar-container">
-        <!-- Логотип или название сайта (можно добавить) -->
+        <!-- Логотип или название сайта -->
         <div class="navbar-brand">
-            <!-- Здесь может быть ваш логотип или название -->
+            <a href="{% url 'home' %}" class="brand-logo">
+                <span>ЭкоСтандарт</span>
+            </a>
         </div>
         
         <!-- Основные ссылки -->
@@ -26,6 +30,7 @@
                 {% if user.is_staff %}
                     <a href="{% url 'admin_panel' %}">Админ-панель</a>
                     <a href="{% url 'request_list' %}">Заявки</a>
+                    <a href="{% url 'site_stats' %}">Статистика</a> <!-- Added stats link -->
                 {% endif %}
                 <form method="POST" action="{% url 'logout' %}" class="logout-form">
                     {% csrf_token %}
@@ -37,7 +42,7 @@
             {% endif %}
         </div>
         
-        <!-- Бургер-меню (теперь справа) -->
+        <!-- Бургер-меню -->
         <div class="burger-menu-container">
             <div class="burger-menu" id="burgerMenu">
                 <span></span>
@@ -49,22 +54,43 @@
 </nav>
 
 <style>
+    :root {
+        --primary: #5D9C59;
+        --primary-light: #DFF6DD;
+        --primary-dark: #3A7D44;
+        --primary-gradient: linear-gradient(135deg, #5D9C59 0%, #3A7D44 100%);
+        --accent: #FFD166;
+        --accent-gradient: linear-gradient(135deg, #FFD166 0%, #F9A825 100%);
+        --danger: #EF476F;
+        --danger-gradient: linear-gradient(135deg, #EF476F 0%, #D63031 100%);
+        --dark: #2D3436;
+        --light: #F7F9F9;
+        --glass-bg: rgba(255, 255, 255, 0.85);
+        --glass-border: rgba(255, 255, 255, 0.2);
+        --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+        --shadow-xl: 0 15px 50px rgba(0, 0, 0, 0.15);
+        --blur: blur(12px);
+    }
+
     * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
     }
-    
+
     .navbar {
-        background: rgba(4, 13, 34, 0.95);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        background: var(--glass-bg);
+        backdrop-filter: var(--blur);
+        box-shadow: var(--shadow-md);
+        border-bottom: 1px solid var(--glass-border);
         padding: 12px 0;
         width: 100%;
-
+        position: sticky;
         top: 0;
         z-index: 1000;
+        font-family: 'Inter', sans-serif;
     }
 
     .navbar-container {
@@ -76,6 +102,23 @@
         justify-content: space-between;
     }
 
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+    }
+
+    .brand-logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .brand-logo:hover {
+        color: var(--primary);
+    }
+
     .nav-links {
         display: flex;
         gap: 15px;
@@ -83,20 +126,38 @@
         transition: all 0.3s ease;
     }
 
-    .nav-links a {
-        color: #ffffff;
+    .nav-links a, .logout-btn {
+        color: var(--dark);
         text-decoration: none;
         padding: 8px 12px;
         border-radius: 8px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         font-weight: 500;
         font-size: 15px;
         white-space: nowrap;
+        position: relative;
     }
 
-    .nav-links a:hover {
-        color: #4a69bd;
-        background: rgba(74, 105, 189, 0.05);
+    .nav-links a:hover, .logout-btn:hover {
+        color: var(--primary);
+        background: rgba(93, 156, 89, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .nav-links a::after, .logout-btn::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%) scaleX(0);
+        width: 50%;
+        height: 2px;
+        background: var(--primary-gradient);
+        transition: transform 0.3s ease;
+    }
+
+    .nav-links a:hover::after, .logout-btn:hover::after {
+        transform: translateX(-50%) scaleX(1);
     }
 
     .dropdown {
@@ -107,30 +168,44 @@
     .dropdown-content {
         display: none;
         position: absolute;
-        background: rgba(255, 255, 255, 0.95);
+        background: var(--glass-bg);
+        backdrop-filter: var(--blur);
         min-width: 200px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        box-shadow: var(--shadow-lg);
         z-index: 1;
-        border-radius: 8px;
+        border-radius: 12px;
+        border: 1px solid var(--glass-border);
         overflow: hidden;
         top: 100%;
         left: 0;
+        animation: fadeIn 0.3s ease forwards;
     }
 
     .dropdown-content a {
-        color: #333;
+        color: var(--dark);
         padding: 12px 16px;
-        display: block;
-        transition: background 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
     }
 
     .dropdown-content a:hover {
-        background: #f1f1f1;
-        color: #4a69bd;
+        background: rgba(93, 156, 89, 0.1);
+        color: var(--primary);
     }
 
     .dropdown:hover .dropdown-content {
         display: block;
+    }
+
+    .dropdown-icon {
+        margin-left: 5px;
+        transition: transform 0.3s ease;
+    }
+
+    .dropdown:hover .dropdown-icon {
+        transform: rotate(180deg);
     }
 
     .logout-form {
@@ -140,18 +215,8 @@
     .logout-btn {
         background: none;
         border: none;
-        color: #ffffff;
         cursor: pointer;
-        padding: 8px 12px;
-        font-size: 15px;
-        font-weight: 500;
         font-family: inherit;
-        border-radius: 8px;
-    }
-
-    .logout-btn:hover {
-        color: #4a69bd;
-        background: rgba(74, 105, 189, 0.05);
     }
 
     .burger-menu-container {
@@ -172,29 +237,32 @@
         display: block;
         width: 100%;
         height: 2px;
-        background: #fff;
+        background: var(--primary);
         transition: all 0.3s ease;
     }
 
-    /* Мобильная версия */
+    /* Mobile Version */
     @media (max-width: 768px) {
         .navbar-container {
             justify-content: space-between;
         }
-        
+
         .nav-links {
             position: fixed;
             top: 60px;
             left: -100%;
             width: 80%;
             height: calc(100vh - 60px);
-            background: rgba(4, 13, 34, 0.98);
+            background: var(--glass-bg);
+            backdrop-filter: var(--blur);
             flex-direction: column;
             align-items: flex-start;
             padding: 20px;
             gap: 15px;
             transition: left 0.3s ease;
             overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            border-right: 1px solid var(--glass-border);
         }
 
         .nav-links.active {
@@ -212,10 +280,11 @@
             box-shadow: none;
             background: rgba(255, 255, 255, 0.1);
             margin-top: 10px;
+            border-radius: 8px;
         }
 
         .dropdown-content a {
-            color: #fff;
+            color: var(--dark);
             padding-left: 30px;
         }
 
@@ -243,6 +312,22 @@
             transform: rotate(-45deg) translate(5px, -5px);
         }
     }
+
+    @media (max-width: 576px) {
+        .brand-logo {
+            font-size: 1.2rem;
+        }
+
+        .nav-links a, .logout-btn {
+            font-size: 14px;
+            padding: 10px;
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 </style>
 
 <script>
@@ -251,14 +336,14 @@
         const navLinks = document.getElementById('navLinks');
         const dropdowns = document.querySelectorAll('.dropdown');
 
-        // Бургер-меню
+        // Burger Menu Toggle
         burgerMenu.addEventListener('click', function(e) {
-            e.stopPropagation(); // Предотвращаем всплытие события
+            e.stopPropagation();
             this.classList.toggle('active');
             navLinks.classList.toggle('active');
         });
 
-        // Выпадающие меню для мобильных
+        // Dropdown for Mobile
         if (window.innerWidth <= 768) {
             dropdowns.forEach(dropdown => {
                 const dropbtn = dropdown.querySelector('.dropbtn');
@@ -267,7 +352,7 @@
                     e.preventDefault();
                     dropdown.classList.toggle('active');
                     
-                    // Закрываем другие открытые dropdown
+                    // Close other open dropdowns
                     dropdowns.forEach(otherDropdown => {
                         if (otherDropdown !== dropdown && otherDropdown.classList.contains('active')) {
                             otherDropdown.classList.remove('active');
@@ -277,7 +362,7 @@
             });
         }
 
-        // Закрытие меню при клике вне его области
+        // Close menu on click outside
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.navbar-container') && window.innerWidth <= 768) {
                 burgerMenu.classList.remove('active');
@@ -287,5 +372,27 @@
                 });
             }
         });
+
+        // GSAP Animations
+        try {
+            gsap.from('.navbar-brand', {
+                duration: 1,
+                opacity: 0,
+                x: -20,
+                ease: 'power3.out',
+                delay: 0.3
+            });
+
+            gsap.from('.nav-links a, .nav-links .logout-btn', {
+                duration: 0.8,
+                opacity: 0,
+                y: 20,
+                stagger: 0.1,
+                ease: 'back.out(1.7)',
+                delay: 0.5
+            });
+        } catch (error) {
+            console.error('GSAP Animation Error:', error);
+        }
     });
 </script>

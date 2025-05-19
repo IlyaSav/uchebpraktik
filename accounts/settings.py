@@ -4,7 +4,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Секретный ключ для вашего приложения
-SECRET_KEY = 'ваш_секретный_ключ'  # Замените на ваш реальный секретный ключ
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'ваш_секретный_ключ')  # Рекомендуется хранить в переменной окружения
 
 # Режим отладки
 DEBUG = False  # На продакшене всегда False!
@@ -35,10 +35,10 @@ MIDDLEWARE = [
 ]
 
 # Корневой URL конфигурации
-ROOT_URLCONF = 'uchebpraktik.urls'  # Замените на имя вашего проекта
+ROOT_URLCONF = 'uchebpraktik.urls'
 
 # WSGI приложение
-WSGI_APPLICATION = 'uchebpraktik.wsgi.application'  # Замените на имя вашего проекта
+WSGI_APPLICATION = 'uchebpraktik.wsgi.application'
 
 # Настройки базы данных
 DATABASES = {
@@ -50,8 +50,47 @@ DATABASES = {
 
 # Настройки статических файлов
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Изменено на 'staticfiles' для лучшей практики
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Дополнительные настройки (например, для статических файлов в продакшене)
+# Дополнительные настройки для статических файлов в продакшене
 if not DEBUG:
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+# Настройки электронной почты
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'mersedog23@gmail.com.com')  # Замените на ваш Gmail
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '451235690')  # Замените на App Password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Базовый URL для ссылок подтверждения
+BASE_URL = 'https://doghap23.pythonanywhere.com'
+
+# Настройки шаблонов
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+# Настройки языка и временной зоны
+LANGUAGE_CODE = 'ru-ru'
+TIME_ZONE = 'Europe/Moscow'
+USE_I18N = True
+USE_TZ = True
+
+# Настройки аутентификации
+LOGIN_REDIRECT_URL = '/accounts/profile/'
+LOGOUT_REDIRECT_URL = '/accounts/'

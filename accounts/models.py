@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
+import uuid
 
 class Beetle(models.Model):
     name = models.CharField(max_length=100)
@@ -10,7 +11,6 @@ class Beetle(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class Service(models.Model):
     name = models.CharField(max_length=200)
@@ -22,7 +22,6 @@ class Service(models.Model):
     def __str__(self):
         return self.name
 
-
 class Article(models.Model):
     title = models.CharField(max_length=255, verbose_name="Заголовок")
     content = models.TextField(verbose_name="Содержание")
@@ -32,10 +31,25 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+class News(models.Model):
+    title = models.CharField(max_length=255, verbose_name="Заголовок")
+    content = models.TextField(verbose_name="Содержание")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Новость"
+        verbose_name_plural = "Новости"
+
 class RequestStatus(models.TextChoices):
     NEW = 'new', 'Новая'
+    VIEWED = 'viewed', 'Просмотрено'
     IN_PROGRESS = 'in_progress', 'В обработке'
-    COMPLETED = 'completed', 'Завершена'
+    COMPLETED = 'completed', 'Услуга оказана'
     CANCELLED = 'cancelled', 'Отменена'
 
 class ServiceRequest(models.Model):
@@ -66,15 +80,6 @@ class Role(models.Model):
     def __str__(self):
         return self.name
 
-# Добавим выбор статусов в ServiceRequest
-class RequestStatus(models.TextChoices):
-    NEW = 'new', 'Новая'
-    VIEWED = 'viewed', 'Просмотрено'
-    IN_PROGRESS = 'in_progress', 'В обработке'
-    COMPLETED = 'completed', 'Услуга оказана'
-    CANCELLED = 'cancelled', 'Отменена'
-
-
 class Review(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True, blank=True, related_name='reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
@@ -84,7 +89,6 @@ class Review(models.Model):
     
     def __str__(self):
         return f"Отзыв от {self.name} ({self.created_at.strftime('%d.%m.%Y')})"
-    
 
 class SiteSettings(models.Model):
     phone_number = models.CharField(max_length=20, verbose_name="Телефон для связи")
@@ -94,3 +98,16 @@ class SiteSettings(models.Model):
 
     class Meta:
         verbose_name = "Настройки сайта"
+
+class NewsletterSubscription(models.Model):
+    email = models.EmailField(unique=True, verbose_name="Электронная почта")
+    subscribed_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата подписки")
+    is_confirmed = models.BooleanField(default=False, verbose_name="Подтверждена")
+    confirmation_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, verbose_name="Токен подтверждения")
+    
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        verbose_name = "Подписка на новости"
+        verbose_name_plural = "Подписки на новости"

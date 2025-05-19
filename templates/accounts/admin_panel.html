@@ -439,6 +439,29 @@
                 </button>
             </form>
         </div>
+
+        <!-- Форма добавления новости -->
+        <div class="form-card">
+            <div class="form-header">
+                <span class="material-icons">newspaper</span>
+                <span>Добавить новость</span>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-field">
+                    <label>Заголовок</label>
+                    {{ news_form.title }}
+                </div>
+                <div class="form-field">
+                    <label>Содержание</label>
+                    {{ news_form.content }}
+                </div>
+                <button type="submit" name="news_submit" class="submit-btn">
+                    <span class="material-icons" style="font-size: 16px;">add</span>
+                    Добавить и отправить
+                </button>
+            </form>
+        </div>
     </div>
 
     <!-- Правая колонка - данные -->
@@ -510,13 +533,33 @@
             <p class="empty-message">Нет данных</p>
             {% endif %}
         </div>
+
+        <!-- Список новостей -->
+        <div class="data-card">
+            <div class="data-header">
+                <span class="material-icons">newspaper</span>
+                <span>Новости</span>
+            </div>
+            {% if news %}
+            <div class="card-grid">
+                {% for news_item in news %}
+                <div class="card-item" onclick="showDetails('news', {{ news_item.id }})">
+                    <span class="material-icons">newspaper</span>
+                    <span>{{ news_item.title }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-message">Нет данных</p>
+            {% endif %}
+        </div>
     </div>
 </div>
 
 <!-- Модальное окно деталей -->
 <div id="detailsOverlay" class="details-overlay" onclick="hideDetails()">
     <div class="details-content" onclick="event.stopPropagation()">
-        <button class="details-close" onclick="hideDetails()">&times;</button>
+        <button class="details-close" onclick="hideDetails()">×</button>
         <div id="detailsContent"></div>
     </div>
 </div>
@@ -563,6 +606,15 @@
             title: "{{ article.title|escapejs }}",
             content: `{{ article.content|linebreaksbr|escapejs }}`,
             recommendations: `{{ article.recommendations|linebreaksbr|escapejs }}`
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    };
+
+    const newsDetails = {
+        {% for news_item in news %}
+        {{ news_item.id }}: {
+            title: "{{ news_item.title|escapejs }}",
+            content: `{{ news_item.content|linebreaksbr|escapejs }}`
         }{% if not forloop.last %},{% endif %}
         {% endfor %}
     };
@@ -667,11 +719,11 @@
                     </div>
                     <div class="form-field">
                         <label>Содержание</label>
-                        <textarea name="content" rows="4">${d.content.replace(/<br\s*\/?>/gi, '\\n')}</textarea>
+                        <textarea name="content" rows="4">${d.content.replace(/<br\s*\/?>/gi, '\n')}</textarea>
                     </div>
                     <div class="form-field">
                         <label>Рекомендации</label>
-                        <textarea name="recommendations" rows="4">${d.recommendations.replace(/<br\s*\/?>/gi, '\\n')}</textarea>
+                        <textarea name="recommendations" rows="4">${d.recommendations.replace(/<br\s*\/?>/gi, '\n')}</textarea>
                     </div>
                     <button type="submit" class="submit-btn" style="margin-right: 10px;">
                         <span class="material-icons" style="font-size: 16px;">save</span>
@@ -688,6 +740,37 @@
                     </button>
                 </form>
             `;
+        } else if (type === 'news' && newsDetails[id]) {
+            const d = newsDetails[id];
+            contentHtml = `
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="news_id" value="${id}">
+                    <input type="hidden" name="news_edit" value="1">
+                    <h3 style="margin-top: 0; color: var(--primary);">Редактировать новость</h3>
+                    <div class="form-field">
+                        <label>Заголовок</label>
+                        <input type="text" name="title" value="${d.title}" required>
+                    </div>
+                    <div class="form-field">
+                        <label>Содержание</label>
+                        <textarea name="content" rows="4">${d.content.replace(/<br\s*\/?>/gi, '\n')}</textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" style="margin-right: 10px;">
+                        <span class="material-icons" style="font-size: 16px;">save</span>
+                        Сохранить
+                    </button>
+                </form>
+                <form method="post" style="margin-top: 10px;">
+                    {% csrf_token %}
+                    <input type="hidden" name="news_id" value="${id}">
+                    <input type="hidden" name="news_delete" value="1">
+                    <button type="submit" class="submit-btn" style="background: var(--error);">
+                        <span class="material-icons" style="font-size: 16px;">delete</span>
+                        Удалить
+                    </button>
+                </form>
+            `;
         }
         document.getElementById('detailsContent').innerHTML = contentHtml;
         document.getElementById('detailsOverlay').style.display = 'flex';
@@ -697,6 +780,5 @@
         document.getElementById('detailsOverlay').style.display = 'none';
     }
 </script>
-
 </body>
 </html>
