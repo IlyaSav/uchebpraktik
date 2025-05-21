@@ -17,14 +17,14 @@
             --dark-color: #222f3e;
             --light-color: #f5f6fa;
         }
-        
+
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background-color: #f8f9fa;
             color: #333;
             line-height: 1.6;
         }
-        
+
         .main-container {
             display: flex;
             max-width: 1200px;
@@ -36,7 +36,7 @@
             min-height: 400px;
             gap: 30px;
         }
-        
+
         .left-block {
             width: 60%;
             padding-right: 20px;
@@ -50,16 +50,16 @@
             scrollbar-width: thin;
             scrollbar-color: var(--primary-color) #f1f1f1;
         }
-        
+
         .left-block::-webkit-scrollbar {
             width: 6px;
         }
-        
+
         .left-block::-webkit-scrollbar-thumb {
             background-color: var(--primary-color);
             border-radius: 3px;
         }
-        
+
         .right-block {
             width: 40%;
             min-height: 300px;
@@ -72,7 +72,7 @@
             padding: 20px;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
         }
-        
+
         .beetle-icon {
             width: 84px;
             height: 84px;
@@ -86,19 +86,19 @@
             background-color: #fff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        
+
         .beetle-icon:hover {
             border-color: var(--primary-color);
             transform: translateY(-3px) scale(1.05);
             box-shadow: 0 4px 12px rgba(46, 134, 222, 0.2);
         }
-        
+
         .beetle-icon.active {
             border-color: var(--primary-color);
             background-color: rgba(46, 134, 222, 0.1);
             transform: translateY(-1px);
         }
-        
+
         .solution-title {
             font-size: 1.4rem;
             font-weight: 700;
@@ -107,7 +107,7 @@
             position: relative;
             padding-bottom: 10px;
         }
-        
+
         .solution-title::after {
             content: '';
             position: absolute;
@@ -118,7 +118,7 @@
             background: var(--primary-color);
             border-radius: 3px;
         }
-        
+
         .solution-text {
             font-size: 1rem;
             line-height: 1.7;
@@ -126,7 +126,7 @@
             opacity: 1;
             transition: opacity 0.2s ease-in-out;
         }
-        
+
         .solution-text a {
             display: inline-block;
             margin-top: 15px;
@@ -135,12 +135,12 @@
             font-weight: 600;
             transition: all 0.2s ease;
         }
-        
+
         .solution-text a:hover {
             color: var(--accent-color);
             text-decoration: underline;
         }
-        
+
         .beetle-name {
             text-align: center;
             font-size: 0.85rem;
@@ -152,7 +152,7 @@
             text-overflow: ellipsis;
             font-weight: 500;
         }
-        
+
         .beetle-item {
             width: 100%;
             height: 120px;
@@ -160,13 +160,13 @@
             margin: 0;
             transition: all 0.3s ease;
         }
-        
+
         .news-container {
             max-width: 1200px;
             margin: 0 auto 50px;
             padding: 20px;
         }
-        
+
         .news-container h2 {
             font-size: 2rem;
             font-weight: 700;
@@ -175,7 +175,7 @@
             position: relative;
             padding-bottom: 10px;
         }
-        
+
         .news-container h2::after {
             content: '';
             position: absolute;
@@ -186,7 +186,7 @@
             background: var(--primary-color);
             border-radius: 2px;
         }
-        
+
         .card {
             border: none;
             border-radius: 12px;
@@ -194,12 +194,12 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
-        
+
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.12);
         }
-        
+
         .card-img-container {
             height: 200px;
             overflow: hidden;
@@ -208,34 +208,34 @@
             justify-content: center;
             background: #f1f3f5;
         }
-        
+
         .card-img-top {
             object-fit: cover;
             width: 100%;
             height: 100%;
             transition: transform 0.5s ease;
         }
-        
+
         .card:hover .card-img-top {
             transform: scale(1.05);
         }
-        
+
         .card-body {
             padding: 20px;
         }
-        
+
         .card-title {
             font-size: 1.25rem;
             font-weight: 700;
             margin-bottom: 10px;
             color: var(--dark-color);
         }
-        
+
         .card-text {
             color: #555;
             margin-bottom: 15px;
         }
-        
+
         .btn-outline-primary {
             border: 2px solid var(--primary-color);
             color: var(--primary-color);
@@ -244,98 +244,155 @@
             padding: 8px 16px;
             transition: all 0.3s ease;
         }
-        
+
         .btn-outline-primary:hover {
             background-color: var(--primary-color);
             color: white;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(46, 134, 222, 0.3);
         }
-        
+
         .card-footer {
             background-color: transparent;
             border-top: 1px solid rgba(0,0,0,0.05);
             padding: 12px 20px;
             font-size: 0.85rem;
         }
-        
+
         /* Newsletter Form Styles */
-        .newsletter-form-container, .newsletter-success {
+        .newsletter-form-container {
             max-width: 600px;
             margin: 0 auto 30px;
         }
-        
-        .newsletter-form-container .card, .newsletter-success .card {
+
+        .newsletter-form-container .card {
             border: none;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease-in-out;
         }
-        
-        .newsletter-form-container .card:hover, .newsletter-success .card:hover {
+
+        .newsletter-form-container .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.12);
         }
-        
+
         .newsletter-form-container .input-group {
             display: flex;
+            align-items: center;
             justify-content: center;
+            max-width: 500px;
+            margin: 0 auto;
         }
-        
+
         .newsletter-form-container .form-control {
             border: 2px solid var(--primary-color);
             border-right: none;
             border-radius: 8px 0 0 8px;
             font-size: 1rem;
-            padding: 10px;
+            padding: 12px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        
+
+        .newsletter-form-container .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 8px rgba(46, 134, 222, 0.2);
+            outline: none;
+        }
+
         .newsletter-form-container .btn-primary {
             background-color: var(--primary-color);
             border: 2px solid var(--primary-color);
+            border-radius: 0 8px 8px 0;
             font-weight: 600;
+            padding: 12px 20px;
             transition: all 0.3s ease;
         }
-        
+
         .newsletter-form-container .btn-primary:hover {
             background-color: var(--secondary-color);
             border-color: var(--secondary-color);
             box-shadow: 0 4px 12px rgba(46, 134, 222, 0.3);
             transform: translateY(-2px);
         }
-        
-        .d-none {
-            display: none;
+
+        #newsletter-message {
+            transition: opacity 0.3s ease;
         }
-        
+
+        /* Modal Styles */
+        .modal.fade {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.fade.show {
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #fff;
+            border: none;
+        }
+
+        .modal-header .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--dark-color);
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-header .btn-close:hover {
+            opacity: 1;
+        }
+
+        .modal-body {
+            line-height: 1.7;
+        }
+
+        .modal-footer .btn-primary {
+            background-color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .modal-footer .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            box-shadow: 0 4px 12px rgba(46, 134, 222, 0.3);
+        }
+
         @media (max-width: 992px) {
             .main-container {
                 flex-direction: column;
                 gap: 30px;
             }
-            
+
             .left-block, .right-block {
                 width: 100%;
             }
-            
+
             .right-block {
                 position: static;
             }
-            
+
             .left-block {
                 max-height: 400px;
             }
         }
-        
+
         @media (max-width: 576px) {
             .main-container {
                 padding: 15px;
             }
-            
+
             .left-block {
                 grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
             }
-            
+
             .beetle-icon {
                 width: 70px;
                 height: 70px;
@@ -362,6 +419,7 @@
                     <h5 class="card-title">{{ offer.name }}</h5>
                     <p class="card-text">{{ offer.description|truncatewords:20 }}</p>
                     <p class="card-text"><strong>Цена от: </strong>{{ offer.price_min }}₽</p>
+                    <!-- Изменено: убрано accounts: -->
                     <a href="{% url 'service_detail' offer.pk %}" class="btn btn-outline-primary">Подробнее</a>
                 </div>
             </div>
@@ -399,28 +457,25 @@
 <!-- News Section -->
 <div class="news-container">
     <h2 class="text-center">Наши последние новости</h2>
-    
+
     <!-- Newsletter Subscription Form -->
     <div class="newsletter-form-container mb-4" id="newsletter-form-container">
         <div class="card p-4" style="background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);">
-            <h5 class="text-center mb-3" style="color: var(--dark-color);">Подпишитесь на наши новости</h5>
+            <h5 class="text-center mb-4" style="color: var(--dark-color); font-weight: 700;">Подпишитесь на наши новости</h5>
             <form id="newsletter-form" action="{% url 'newsletter_subscribe' %}" method="POST">
                 {% csrf_token %}
-                <div class="input-group">
-                    <input type="email" name="email" class="form-control" placeholder="Введите ваш email" required>
-                    <button type="submit" class="btn btn-primary" style="border-radius: 0 8px 8px 0;">
+                <div class="input-group mb-2">
+                    <input type="email" name="email" class="form-control" placeholder="Введите ваш email" required aria-label="Email">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fas fa-envelope me-2"></i>Подписаться
                     </button>
                 </div>
+                <p class="text-center mt-2 mb-0" style="color: #555; font-size: 0.9rem;">
+                    Получайте актуальные новости и специальные предложения!
+                </p>
             </form>
-            <p class="text-center mt-3 mb-0" style="color: #555; font-size: 0.9rem;">
-                Получайте актуальные новости и специальные предложения!
-            </p>
+            <div id="newsletter-message" class="text-center mt-3" style="font-size: 0.9rem;"></div>
         </div>
-    </div>
-    <div class="newsletter-success d-none card p-4 text-center" id="newsletter-success" style="background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);">
-        <h5 class="mb-3" style="color: var(--dark-color);">Спасибо за подписку!</h5>
-        <p style="color: #555;">Теперь вы будете получать наши последние новости и специальные предложения.</p>
     </div>
 
     <div class="row">
@@ -439,7 +494,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-6 mb-4">
             <div class="card h-100">
                 <div class="card-img-container">
@@ -448,7 +503,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Экстренная дезинсекция за 2 часа</h5>
                     <p class="card-text">Теперь доступна услуга срочной обработки от тараканов, клопов и других вредителей. Наши специалисты приедут в течение 2 часов после заявки и проведут комплексную обработку с гарантией результата.</p>
-                    <a href="{% url 'services' %}" class="btn btn-outline-primary">Заказать срочный выезд</a>
+                    <a href="{% url 'order' %}" class="btn btn-outline-primary">Заказать срочный выезд</a>
                 </div>
                 <div class="card-footer text-muted">
                     <small><i class="fas fa-clock me-2"></i>Круглосуточный выезд</small>
@@ -457,6 +512,36 @@
         </div>
     </div>
 </div>
+
+<!-- Confirmation Modal -->
+{% if confirmation_message %}
+<div class="modal fade show" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" style="display: block; background: rgba(0,0,0,0.5);" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+            <div class="modal-header" style="border-bottom: none; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);">
+                <h5 class="modal-title" id="confirmationModalLabel" style="color: var(--dark-color); font-weight: 700;">
+                    {% if confirmation_status == 'success' %}
+                    Подписка подтверждена
+                    {% elif confirmation_status == 'info' %}
+                    Информация
+                    {% else %}
+                    Ошибка
+                    {% endif %}
+                </h5>
+                <button type="button" class="btn-close" onclick="closeModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="padding: 20px; color: #333; font-size: 1rem;">
+                {{ confirmation_message }}
+            </div>
+            <div class="modal-footer" style="border-top: none; padding: 15px 20px;">
+                <button type="button" class="btn btn-primary" onclick="closeModal()" style="border-radius: 8px; padding: 10px 20px;">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 
 <script>
     // Функция для склонения названий вредителей
@@ -491,12 +576,12 @@
 
         // Приводим к нижнему регистру для сравнения
         const lowerName = name.toLowerCase();
-        
+
         // Проверяем точные совпадения
         if (exceptions[lowerName]) {
             return exceptions[lowerName];
         }
-        
+
         // Проверяем частичные совпадения (если название содержит ключ)
         for (const [key, value] of Object.entries(exceptions)) {
             if (lowerName.includes(key)) {
@@ -530,10 +615,10 @@
                 i.classList.remove('active');
                 i.style.transform = 'scale(1)';
             });
-            
+
             // Add active class to clicked
             icon.classList.add('active');
-            
+
             // Update solution block
             let description = icon.getAttribute('data-description');
             const name = icon.getAttribute('data-name') || 'вредителем';
@@ -553,7 +638,7 @@
             solutionText.style.opacity = 0;
             solutionText.addEventListener('transitionend', function handler() {
                 solutionText.removeEventListener('transitionend', handler);
-                solutionText.innerHTML = description + '<br><br>При необходимости не стесняйтесь обратиться к профессиональным дезинсекторам для эффективной обработки. <a href="/services/" class="service-link"><i class="fas fa-arrow-right me-2"></i>Подробнее об услугах</a>';
+                 solutionText.innerHTML = description + '<br><br>При необходимости не стесняйтесь обратиться к профессиональным дезинсекторам для эффективной обработки. <a href="{% url 'services' %}" class="service-link"><i class="fas fa-arrow-right me-2"></i>Подробнее об услугах</a>';
                 // Force reflow to ensure opacity transition triggers
                 void solutionText.offsetWidth;
                 setTimeout(() => {
@@ -566,10 +651,15 @@
     // Newsletter Form Submission
     document.getElementById('newsletter-form').addEventListener('submit', function(e) {
         e.preventDefault();
-        
+
         const form = this;
         const formData = new FormData(form);
-        
+        const messageDiv = document.getElementById('newsletter-message');
+        const formContainer = document.getElementById('newsletter-form-container');
+
+        // Очистка предыдущих сообщений
+        messageDiv.textContent = '';
+
         fetch(form.action, {
             method: 'POST',
             body: formData,
@@ -579,31 +669,46 @@
         })
         .then(response => response.json())
         .then(data => {
-            const formContainer = document.getElementById('newsletter-form-container');
-            const successContainer = document.getElementById('newsletter-success');
-            
+            messageDiv.textContent = data.message;
+            messageDiv.style.color = data.status === 'success' ? 'var(--primary-color)' : 'var(--accent-color)';
+
             if (data.status === 'success') {
                 formContainer.style.opacity = '0';
                 formContainer.addEventListener('transitionend', function handler() {
-                    formContainer.classList.add('d-none');
-                    successContainer.classList.remove('d-none');
-                    successContainer.style.opacity = '0';
-                    // Force reflow to ensure opacity transition triggers
-                    void successContainer.offsetWidth;
-                    setTimeout(() => {
-                        successContainer.style.opacity = '1';
-                    }, 10);
+                    formContainer.style.display = 'none';
+                    form.reset();
+                    formContainer.style.opacity = '1';
                     formContainer.removeEventListener('transitionend', handler);
                 });
-            } else {
-                // Display error message
-                alert(data.message);
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Произошла ошибка. Пожалуйста, попробуйте снова.');
+            messageDiv.textContent = 'Произошла ошибка. Пожалуйста, попробуйте снова.';
+            messageDiv.style.color = 'var(--accent-color)';
         });
+    });
+
+    // Modal Close Function
+    function closeModal() {
+        const modal = document.getElementById('confirmationModal');
+        if (modal) {
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.remove();
+            }, 300);
+        }
+    }
+
+    // Ensure modal fades in
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('confirmationModal');
+        if (modal) {
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modal.style.transition = 'opacity 0.3s ease';
+            }, 10);
+        }
     });
 </script>
 {% include 'includes/footer.html' %}

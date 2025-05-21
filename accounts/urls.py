@@ -1,3 +1,4 @@
+# accounts/urls.py
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
@@ -14,7 +15,7 @@ urlpatterns = [
     path('services/', views.services, name='services'),
     path('services/<int:pk>/', views.service_detail, name='service_detail'),
     path('about/', views.about, name='about'),
-    path('order/', order, name='order'),  # Оставляем один маршрут
+    path('order/', order, name='order'),
     path('contacts/', views.contacts, name='contacts'),
     path('articles/', views.articles, name='articles'),
     path('reviews/', views.reviews, name='reviews'),
@@ -24,5 +25,5 @@ urlpatterns = [
     path('requests/<int:pk>/', views.request_detail, name='request_detail'),
     path('newsletter/subscribe/', views.newsletter_subscribe, name='newsletter_subscribe'),
     path('confirm-subscription/<uuid:token>/', views.confirm_subscription, name='confirm_subscription'),
-    path('stats/', views.site_stats, name='site_stats'),  # Маршрут для статистики
+    path('stats/', views.site_stats, name='site_stats'),
 ]

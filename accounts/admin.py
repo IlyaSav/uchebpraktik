@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
-from .models import Beetle, Service, Article
+from .models import Beetle, Service, Article, NewsletterSubscription
 from .models import SiteSettings
 
 # Unregister the original User admin
@@ -32,6 +32,44 @@ class ArticleAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_at', 'updated_at')
     search_fields = ('title', 'content', 'recommendations')
     list_filter = ('created_at', 'updated_at')
+
+# Register NewsletterSubscription model
+@admin.register(NewsletterSubscription)
+class NewsletterSubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('email', 'is_confirmed', 'subscribed_at', 'confirmation_token')
+    list_filter = ('is_confirmed', 'subscribed_at')
+    search_fields = ('email',)
+    readonly_fields = ('subscribed_at', 'confirmation_token')
+    actions = ['send_confirmation_email']
+
+    def send_confirmation_email(self, request, queryset):
+        from django.core.mail import send_mail
+        from django.conf import settings
+        from django.template.loader import render_to_string
+        
+        count = 0
+        for subscription in queryset.filter(is_confirmed=False):
+            try:
+                confirmation_url = f"{settings.BASE_URL}/accounts/confirm-subscription/{subscription.confirmation_token}/"
+                subject = "Подтверждение подписки на новости"
+                message = render_to_string('accounts/email_subscription_confirmation.html', {
+                    'confirmation_url': confirmation_url,
+                })
+                
+                send_mail(
+                    subject,
+                    '',
+                    settings.DEFAULT_FROM_EMAIL,
+                    [subscription.email],
+                    html_message=message,
+                    fail_silently=False,
+                )
+                count += 1
+            except Exception as e:
+                self.message_user(request, f"Ошибка отправки для {subscription.email}: {str(e)}", level='ERROR')
+        
+        self.message_user(request, f"Письма с подтверждением отправлены {count} подписчикам.")
+    send_confirmation_email.short_description = "Отправить письмо с подтверждением выбранным подписчикам"
 
 # Extend UserAdmin to show groups in list display and filter
 @admin.register(User)

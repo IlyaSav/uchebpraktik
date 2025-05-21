@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -9,6 +10,9 @@ from django.template.loader import render_to_string
 from .forms import UserRegisterForm, BeetleForm, ServiceForm, ArticleForm, ServiceRequestForm, ReviewForm, NewsletterSubscriptionForm, NewsForm, UserProfileForm
 from .models import Beetle, Service, Article, ServiceRequest, RequestStatus, Review, SiteSettings, NewsletterSubscription, News
 from django.db.models import Count
+
+# Настройка логирования для диагностики ошибок
+logger = logging.getLogger(__name__)
 
 def register(request):
     if request.method == 'POST':
@@ -30,7 +34,7 @@ def home(request):
 @login_required
 def profile(request):
     user_requests = ServiceRequest.objects.filter(user=request.user).order_by('-created_at')
-    profile_form = UserProfileForm(instance=request.user)  # Pass form to template
+    profile_form = UserProfileForm(instance=request.user)
     return render(request, 'accounts/profile.html', {'user_requests': user_requests, 'profile_form': profile_form})
 
 @login_required
@@ -43,12 +47,10 @@ def edit_profile(request):
             return redirect('profile')
         else:
             messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
-            # Re-render profile with form errors
             return render(request, 'accounts/profile.html', {
                 'user_requests': ServiceRequest.objects.filter(user=request.user).order_by('-created_at'),
                 'profile_form': form
             })
-    # GET requests are handled by the profile view
     return redirect('profile')
 
 def services(request):
@@ -264,58 +266,142 @@ def request_detail(request, pk):
     return render(request, 'accounts/request_detail.html', {'request': service_request, 'status_choices': status_choices})
 
 def newsletter_subscribe(request):
-    if request.method == 'POST':
+    """
+    Обработка подписки на рассылку.
+    Проверяет существующие подписки, создаёт новые, отправляет письмо с подтверждением.
+    Включает полную обработку исключений и логирование для диагностики ошибок.
+    """
+    logger.info("Начало обработки newsletter_subscribe")
+    if request.method != 'POST':
+        logger.info("Неверный метод запроса")
+        return JsonResponse({'status': 'error', 'message': 'Неверный метод запроса.'}, status=400)
+
+    try:
         form = NewsletterSubscriptionForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            subscription, created = NewsletterSubscription.objects.get_or_create(email=email)
-            if not created and subscription.is_confirmed:
+        email = request.POST.get('email', '').strip().lower()
+        logger.info(f"POST data: {request.POST}, Email: {email}")
+
+        # Проверка настроек
+        if not hasattr(settings, 'BASE_URL'):
+            logger.error("BASE_URL не определён в settings.py")
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Ошибка конфигурации сервера.'
+            }, status=500)
+        if not hasattr(settings, 'DEFAULT_FROM_EMAIL'):
+            logger.error("DEFAULT_FROM_EMAIL не определён в settings.py")
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Ошибка конфигурации сервера.'
+            }, status=500)
+
+        # Проверка существующей подписки
+        try:
+            subscription = NewsletterSubscription.objects.get(email=email)
+            logger.info(f"Найдена существующая подписка: {subscription}, Подтверждена: {subscription.is_confirmed}")
+            if subscription.is_confirmed:
                 return JsonResponse({
                     'status': 'error',
-                    'message': 'Этот email уже подписан и подтвержден.'
+                    'message': 'Этот email уже подписан и подтверждён.'
                 })
+        except NewsletterSubscription.DoesNotExist:
+            logger.info("Подписка не найдена")
+            if form.is_valid():
+                try:
+                    subscription = form.save()
+                    logger.info(f"Новая подписка создана: {subscription}")
+                except Exception as e:
+                    logger.error(f"Ошибка при сохранении подписки: {str(e)}", exc_info=True)
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': 'Ошибка при создании подписки.'
+                    }, status=500)
+            else:
+                error_message = 'Пожалуйста, введите корректный email.'
+                if 'email' in form.errors:
+                    for error in form.errors['email']:
+                        if error['code'] == 'invalid':
+                            error_message = 'Пожалуйста, введите корректный email.'
+                logger.info(f"Ошибка формы: {error_message}")
+                return JsonResponse({
+                    'status': 'error',
+                    'message': error_message
+                })
+
+        # Формирование письма
+        try:
             confirmation_url = f"{settings.BASE_URL}/accounts/confirm-subscription/{subscription.confirmation_token}/"
+            logger.info(f"Confirmation URL: {confirmation_url}")
             subject = "Подтверждение подписки на новости"
             message = render_to_string('accounts/email_subscription_confirmation.html', {
                 'confirmation_url': confirmation_url,
             })
-            try:
-                send_mail(
-                    subject,
-                    '',
-                    settings.DEFAULT_FROM_EMAIL,
-                    [email],
-                    html_message=message,
-                    fail_silently=False,
-                )
-                return JsonResponse({
-                    'status': 'success',
-                    'message': 'Пожалуйста, подтвердите подписку, перейдя по ссылке, отправленной на ваш email.'
-                })
-            except Exception as e:
-                return JsonResponse({
-                    'status': 'error',
-                    'message': f'Ошибка при отправке письма: {str(e)}'
-                })
-        else:
+            logger.info("Шаблон письма успешно отрендерен")
+        except Exception as e:
+            logger.error(f"Ошибка при рендеринге шаблона: {str(e)}", exc_info=True)
             return JsonResponse({
                 'status': 'error',
-                'message': 'Пожалуйста, введите корректный email.'
+                'message': 'Ошибка при подготовке письма.'
+            }, status=500)
+
+        # Отправка письма
+        try:
+            send_mail(
+                subject,
+                '',
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                html_message=message,
+                fail_silently=False,
+            )
+            logger.info("Письмо успешно отправлено")
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Пожалуйста, подтвердите подписку, перейдя по ссылке, отправленной на ваш email.'
             })
-    return JsonResponse({'status': 'error', 'message': 'Неверный метод запроса.'})
+        except Exception as e:
+            logger.error(f"Ошибка при отправке письма: {str(e)}", exc_info=True)
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Ошибка при отправке письма.'
+            }, status=500)
+
+    except Exception as e:
+        logger.error(f"Необработанная ошибка в newsletter_subscribe: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Внутренняя ошибка сервера.'
+        }, status=500)
 
 def confirm_subscription(request, token):
+    """
+    Обработка подтверждения подписки.
+    Показывает модальное окно с результатом подтверждения.
+    """
+    logger.info(f"Начало обработки confirm_subscription с токеном: {token}")
     try:
         subscription = NewsletterSubscription.objects.get(confirmation_token=token)
         if not subscription.is_confirmed:
             subscription.is_confirmed = True
             subscription.save()
-            messages.success(request, 'Ваша подписка успешно подтверждена! Вы будете получать наши новости.')
+            message = 'Ваша подписка успешно подтверждена! Вы будете получать наши новости.'
+            status = 'success'
+            logger.info(f"Подписка подтверждена для: {subscription.email}")
         else:
-            messages.info(request, 'Эта подписка уже подтверждена.')
+            message = 'Эта подписка уже подтверждена.'
+            status = 'info'
+            logger.info(f"Подписка уже подтверждена для: {subscription.email}")
     except NewsletterSubscription.DoesNotExist:
-        messages.error(request, 'Недействительный токен подтверждения.')
-    return redirect('home')
+        message = 'Недействительный токен подтверждения.'
+        status = 'error'
+        logger.error(f"Недействительный токен: {token}")
+
+    return render(request, 'accounts/index.html', {
+        'confirmation_message': message,
+        'confirmation_status': status,
+        'beetles': Beetle.objects.all(),
+        'offers': Service.objects.order_by('price_min')[:3]
+    })
 
 def get_global_context():
     return {
@@ -327,37 +413,25 @@ class GlobalContextMixin:
         context = super().get_context_data(**kwargs)
         context.update(get_global_context())
         return context
-    
 
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def site_stats(request):
-    # User statistics
     total_users = User.objects.count()
     active_users = User.objects.filter(is_active=True).count()
     staff_users = User.objects.filter(is_staff=True).count()
-
-    # Service request statistics
     total_requests = ServiceRequest.objects.count()
     new_requests = ServiceRequest.objects.filter(status='new').count()
     in_progress_requests = ServiceRequest.objects.filter(status='in_progress').count()
     completed_requests = ServiceRequest.objects.filter(status='completed').count()
     cancelled_requests = ServiceRequest.objects.filter(status='cancelled').count()
-
-    # Review statistics
     total_reviews = Review.objects.count()
-
-    # Newsletter subscription statistics
     total_subscriptions = NewsletterSubscription.objects.count()
     confirmed_subscriptions = NewsletterSubscription.objects.filter(is_confirmed=True).count()
-
-    # Content statistics
     total_services = Service.objects.count()
     total_articles = Article.objects.count()
     total_beetles = Beetle.objects.count()
     total_news = News.objects.count()
-
-    # Top services by request count
     top_services = Service.objects.annotate(
         request_count=Count('servicerequest')
     ).order_by('-request_count')[:5]
