@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Новый запрос обратного звонка</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+    <h2 style="color: #2e86de;">Новый запрос обратного звонка</h2>
+    <p>Получен новый запрос обратного звонка:</p>
+    <ul>
+        <li><strong>Номер телефона:</strong> {{ phone_number }}</li>
+        <li><strong>Пользователь:</strong> {{ user }}</li>
+        <li><strong>Дата и время:</strong> {{ created_at }}</li>
+    </ul>
+    <p>Пожалуйста, свяжитесь с клиентом как можно скорее.</p>
+    <p>С уважением,<br>Команда ЭкоСтандарт</p>
+    {% include 'includes/call_manager_button.html' %}
+</body>
+</html>

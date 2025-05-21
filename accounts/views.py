@@ -7,8 +7,8 @@ from django.http import JsonResponse
 from django.core.mail import send_mass_mail, send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
-from .forms import UserRegisterForm, BeetleForm, ServiceForm, ArticleForm, ServiceRequestForm, ReviewForm, NewsletterSubscriptionForm, NewsForm, UserProfileForm
-from .models import Beetle, Service, Article, ServiceRequest, RequestStatus, Review, SiteSettings, NewsletterSubscription, News
+from .forms import UserRegisterForm, BeetleForm, ServiceForm, ArticleForm, ServiceRequestForm, ReviewForm, NewsletterSubscriptionForm, NewsForm, UserProfileForm, CallbackRequestForm
+from .models import Beetle, Service, Article, ServiceRequest, RequestStatus, Review, SiteSettings, NewsletterSubscription, News, CallbackRequest
 from django.db.models import Count
 
 # Настройка логирования для диагностики ошибок
@@ -121,6 +121,7 @@ def admin_panel(request):
     service_form = ServiceForm()
     article_form = ArticleForm()
     news_form = NewsForm()
+    callback_form = CallbackRequestForm()
     message = ''
     if request.method == 'POST':
         if 'beetle_submit' in request.POST:
@@ -218,20 +219,36 @@ def admin_panel(request):
             news.delete()
             message = 'Новость успешно удалена!'
             news_form = NewsForm()
+        elif 'callback_mark_processed' in request.POST:
+            callback_id = request.POST.get('callback_id')
+            callback = CallbackRequest.objects.get(id=callback_id)
+            callback.is_processed = True
+            callback.save()
+            message = 'Запрос обратного звонка помечен как обработанный!'
+            callback_form = CallbackRequestForm()
+        elif 'callback_delete' in request.POST:
+            callback_id = request.POST.get('callback_id')
+            callback = CallbackRequest.objects.get(id=callback_id)
+            callback.delete()
+            message = 'Запрос обратного звонка удалён!'
+            callback_form = CallbackRequestForm()
     beetles = Beetle.objects.all()
     services = Service.objects.all()
     articles = Article.objects.all()
     news = News.objects.all()
+    callbacks = CallbackRequest.objects.all().order_by('-created_at')
     return render(request, 'accounts/admin_panel.html', {
         'beetle_form': beetle_form,
         'service_form': service_form,
         'article_form': article_form,
         'news_form': news_form,
+        'callback_form': callback_form,
         'message': message,
         'beetles': beetles,
         'services': services,
         'articles': articles,
         'news': news,
+        'callbacks': callbacks,
     })
 
 def is_admin_or_manager(user):
@@ -403,6 +420,70 @@ def confirm_subscription(request, token):
         'offers': Service.objects.order_by('price_min')[:3]
     })
 
+def callback_request(request):
+    """
+    Обработка запроса обратного звонка.
+    Сохраняет запрос в базе и отправляет уведомление менеджеру.
+    """
+    logger.info("Начало обработки callback_request")
+    if request.method != 'POST':
+        logger.info("Неверный метод запроса")
+        return JsonResponse({'status': 'error', 'message': 'Неверный метод запроса.'}, status=400)
+
+    try:
+        form = CallbackRequestForm(request.POST)
+        if form.is_valid():
+            callback = form.save(commit=False)
+            if request.user.is_authenticated:
+                callback.user = request.user
+            callback.save()
+            logger.info(f"Запрос обратного звонка создан: {callback}")
+
+            # Получаем email менеджера из SiteSettings
+            site_settings = SiteSettings.objects.first()
+            manager_email = site_settings.manager_email if site_settings and site_settings.manager_email else settings.DEFAULT_FROM_EMAIL
+
+            # Отправка письма менеджеру
+            subject = "Новый запрос обратного звонка"
+            message = render_to_string('accounts/email_callback_notification.html', {
+                'phone_number': callback.phone_number,
+                'user': callback.user.username if callback.user else "Аноним",
+                'created_at': callback.created_at,
+            })
+            try:
+                send_mail(
+                    subject,
+                    '',
+                    settings.DEFAULT_FROM_EMAIL,
+                    [manager_email],
+                    html_message=message,
+                    fail_silently=False,
+                )
+                logger.info("Уведомление менеджеру отправлено")
+            except Exception as e:
+                logger.error(f"Ошибка при отправке письма менеджеру: {str(e)}", exc_info=True)
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Запрос сохранён, но отправка уведомления не удалась.'
+                }, status=500)
+
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Ваш запрос принят! Менеджер свяжется с вами в ближайшее время.'
+            })
+        else:
+            logger.info(f"Ошибка формы: {form.errors}")
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Пожалуйста, введите корректный номер телефона.'
+            })
+    except Exception as e:
+        logger.error(f"Необработанная ошибка в callback_request: {str(e)}", exc_info=True)
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Внутренняя ошибка сервера.'
+        }, status=500)
+
 def get_global_context():
     return {
         'site_settings': SiteSettings.objects.first() or SiteSettings(phone_number="+79508102029")
@@ -432,6 +513,8 @@ def site_stats(request):
     total_articles = Article.objects.count()
     total_beetles = Beetle.objects.count()
     total_news = News.objects.count()
+    total_callbacks = CallbackRequest.objects.count()
+    unprocessed_callbacks = CallbackRequest.objects.filter(is_processed=False).count()
     top_services = Service.objects.annotate(
         request_count=Count('servicerequest')
     ).order_by('-request_count')[:5]
@@ -452,6 +535,8 @@ def site_stats(request):
         'total_articles': total_articles,
         'total_beetles': total_beetles,
         'total_news': total_news,
+        'total_callbacks': total_callbacks,
+        'unprocessed_callbacks': unprocessed_callbacks,
         'top_services': top_services,
     }
 

@@ -92,6 +92,7 @@ class Review(models.Model):
 
 class SiteSettings(models.Model):
     phone_number = models.CharField(max_length=20, verbose_name="Телефон для связи")
+    manager_email = models.EmailField(default="manager@example.com", verbose_name="Email менеджера")
     
     def __str__(self):
         return self.phone_number
@@ -109,5 +110,18 @@ class NewsletterSubscription(models.Model):
         return self.email
 
     class Meta:
-        verbose_name = "Подписка на новости"
+        verbose_name = "Подписка на новости" 
         verbose_name_plural = "Подписки на новости"
+
+class CallbackRequest(models.Model):
+    phone_number = models.CharField(max_length=20, verbose_name="Номер телефона")
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Пользователь")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    is_processed = models.BooleanField(default=False, verbose_name="Обработан")
+
+    class Meta:
+        verbose_name = "Запрос обратного звонка"
+        verbose_name_plural = "Запросы обратного звонка"
+
+    def __str__(self):
+        return f"Запрос от {self.phone_number} ({self.created_at})"

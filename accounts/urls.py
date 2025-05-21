@@ -26,4 +26,5 @@ urlpatterns = [
     path('newsletter/subscribe/', views.newsletter_subscribe, name='newsletter_subscribe'),
     path('confirm-subscription/<uuid:token>/', views.confirm_subscription, name='confirm_subscription'),
     path('stats/', views.site_stats, name='site_stats'),
+    path('callback-request/', views.callback_request, name='callback_request'),
 ]

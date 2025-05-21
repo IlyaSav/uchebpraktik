@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Beetle, Service, Article, ServiceRequest, Review, NewsletterSubscription, News
+from .models import Beetle, Service, Article, ServiceRequest, Review, NewsletterSubscription, News, CallbackRequest
 
 class EmailAuthenticationForm(AuthenticationForm):
     username = forms.EmailField(label="Email", max_length=254)
@@ -55,3 +55,15 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
+
+class CallbackRequestForm(forms.ModelForm):
+    class Meta:
+        model = CallbackRequest
+        fields = ['phone_number']
+        widgets = {
+            'phone_number': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите ваш номер телефона',
+                'required': 'required',
+            }),
+        }

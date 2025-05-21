@@ -294,6 +294,17 @@
             color: var(--primary-light);
             padding: 5px;
         }
+        
+        /* Стили для статуса запроса */
+        .status-processed {
+            color: var(--success);
+            font-weight: 500;
+        }
+        
+        .status-unprocessed {
+            color: var(--error);
+            font-weight: 500;
+        }
 
         @media (max-width: 768px) {
             .container {
@@ -323,7 +334,7 @@
     <h1>Панель управления дезинсекцией</h1>
     
     {% if message %}
-    <div class="message">
+    <div class="message" style="grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; background: var(--success); color: white; padding: 10px; border-radius: 4px;">
         <span class="material-icons">check_circle</span>
         {{ message }}
     </div>
@@ -553,6 +564,29 @@
             <p class="empty-message">Нет данных</p>
             {% endif %}
         </div>
+
+        <!-- Список запросов обратного звонка -->
+        <div class="data-card">
+            <div class="data-header">
+                <span class="material-icons">phone_callback</span>
+                <span>Запросы обратного звонка</span>
+            </div>
+            {% if callbacks %}
+            <div class="card-grid">
+                {% for callback in callbacks %}
+                <div class="card-item" onclick="showDetails('callback', {{ callback.id }})">
+                    <span class="material-icons">phone_callback</span>
+                    <span>{{ callback.phone_number }}</span>
+                    <span style="font-size: 0.65rem; color: {{ callback.is_processed|yesno:'var(--success),var(--error)' }};">
+                        {{ callback.is_processed|yesno:"Обработан,Не обработан" }}
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-message">Нет запросов</p>
+            {% endif %}
+        </div>
     </div>
 </div>
 
@@ -615,6 +649,17 @@
         {{ news_item.id }}: {
             title: "{{ news_item.title|escapejs }}",
             content: `{{ news_item.content|linebreaksbr|escapejs }}`
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    };
+
+    const callbackDetails = {
+        {% for callback in callbacks %}
+        {{ callback.id }}: {
+            phone_number: "{{ callback.phone_number|escapejs }}",
+            user: "{{ callback.user.username|default:'Аноним'|escapejs }}",
+            created_at: "{{ callback.created_at|date:'d.m.Y H:i'|escapejs }}",
+            is_processed: {{ callback.is_processed|yesno:"true,false" }}
         }{% if not forloop.last %},{% endif %}
         {% endfor %}
     };
@@ -771,6 +816,37 @@
                     </button>
                 </form>
             `;
+        } else if (type === 'callback' && callbackDetails[id]) {
+            const d = callbackDetails[id];
+            contentHtml = `
+                <h3 style="margin-top: 0; color: var(--primary);">Запрос обратного звонка</h3>
+                <div style="font-size: 0.9rem; margin-bottom: 15px;">
+                    <p><strong>Номер телефона:</strong> ${d.phone_number}</p>
+                    <p><strong>Пользователь:</strong> ${d.user}</p>
+                    <p><strong>Дата и время:</strong> ${d.created_at}</p>
+                    <p><strong>Статус:</strong> <span class="${d.is_processed ? 'status-processed' : 'status-unprocessed'}">${d.is_processed ? 'Обработан' : 'Не обработан'}</span></p>
+                </div>
+                ${!d.is_processed ? `
+                <form method="post" style="margin-bottom: 10px;">
+                    {% csrf_token %}
+                    <input type="hidden" name="callback_id" value="${id}">
+                    <input type="hidden" name="callback_mark_processed" value="1">
+                    <button type="submit" class="submit-btn" style="background: var(--success);">
+                        <span class="material-icons" style="font-size: 16px;">check_circle</span>
+                        Пометить как обработанный
+                    </button>
+                </form>
+                ` : ''}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="callback_id" value="${id}">
+                    <input type="hidden" name="callback_delete" value="1">
+                    <button type="submit" class="submit-btn" style="background: var(--error);">
+                        <span class="material-icons" style="font-size: 16px;">delete</span>
+                        Удалить
+                    </button>
+                </form>
+            `;
         }
         document.getElementById('detailsContent').innerHTML = contentHtml;
         document.getElementById('detailsOverlay').style.display = 'flex';
@@ -780,5 +856,6 @@
         document.getElementById('detailsOverlay').style.display = 'none';
     }
 </script>
+{% include 'includes/call_manager_button.html' %}
 </body>
 </html>
