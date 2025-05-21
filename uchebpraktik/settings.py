@@ -10,8 +10,15 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-^liq_7+($o-=w0
 # Режим отладки (False в продакшене)
 DEBUG = True
 
+
 # Разрешённые хосты
-ALLOWED_HOSTS = ['doghap23.pythonanywhere.com', '*.pythonanywhere.com']
+ALLOWED_HOSTS = ['doghap23.pythonanywhere.com', '*.pythonanywhere.com', '127.0.0.1']
+
+
+
+
+# Application definition
+
 
 # Установленные приложения
 INSTALLED_APPS = [
