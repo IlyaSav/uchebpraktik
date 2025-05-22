@@ -10,6 +10,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-^liq_7+($o-=w0
 # Режим отладки (False в продакшене)
 DEBUG = True
 
+SITE_URL = 'https://doghap23.pythonanywhere.com/'
 # Разрешённые хосты
 ALLOWED_HOSTS = ['doghap23.pythonanywhere.com', '*.pythonanywhere.com']
 
@@ -22,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'django.contrib.sitemaps',
 ]
 
 # Кастомный бэкенд авторизации
